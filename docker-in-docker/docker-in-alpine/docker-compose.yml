@@ -8,16 +8,25 @@ services:
         privileged: true
         volumes:
             - ./var-lib-docker:/var/lib/docker
-        ports:
-            - 2375:2375        
+        # ports:
+        #     - 2375:2375        
     
-    # Docker Client
+    # Docker Client  链接到docker-dind容器内的Docker Daemon
     docker-client:
         image: docker
         # image: docker:stable
+        # https://hub.docker.com/_/docker/
+        # privileged: true
         links: 
             - docker-dind:docker
 
+    # Docker Host 连接到宿主机安装的Docker Daemon
+    docker-host:
+        image: docker
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
 
 
 
+# docker run --rm --privileged -v var-lib-docker:/var/lib/docker --name docker-dind -d docker:dind
+# docker run -ti --rm --link docker-dind:docker docker
