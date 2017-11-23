@@ -1,9 +1,36 @@
 FROM debian
+# FROM debian:9.2
 
 # https://hub.docker.com/_/debian/
-# 9.2, 9, stretch, latest 
-# 8.9, 8, jessie, latest 
-# 7.11, 7, wheezy 
+# https://store.docker.com/images/debian
+# buster, buster-20171009 (buster/Dockerfile)
+# buster-slim (buster/slim/Dockerfile)
+# experimental, experimental-20171009 (experimental/Dockerfile)
+# jessie, jessie-20171009, 8.9, 8 (jessie/Dockerfile)
+# jessie-backports (jessie/backports/Dockerfile)
+# jessie-slim (jessie/slim/Dockerfile)
+# oldoldstable, oldoldstable-20171009 (oldoldstable/Dockerfile)
+# oldoldstable-backports (oldoldstable/backports/Dockerfile)
+# oldoldstable-slim (oldoldstable/slim/Dockerfile)
+# oldstable, oldstable-20171009 (oldstable/Dockerfile)
+# oldstable-backports (oldstable/backports/Dockerfile)
+# oldstable-slim (oldstable/slim/Dockerfile)
+# rc-buggy, rc-buggy-20171009 (rc-buggy/Dockerfile)
+# sid, sid-20171009 (sid/Dockerfile)
+# sid-slim (sid/slim/Dockerfile)
+# stable, stable-20171009 (stable/Dockerfile)
+# stable-backports (stable/backports/Dockerfile)
+# stable-slim (stable/slim/Dockerfile)
+# stretch, stretch-20171009, 9.2, 9, latest (stretch/Dockerfile)
+# stretch-backports (stretch/backports/Dockerfile)
+# stretch-slim (stretch/slim/Dockerfile)
+# testing, testing-20171009 (testing/Dockerfile)
+# testing-slim (testing/slim/Dockerfile)
+# unstable, unstable-20171009 (unstable/Dockerfile)
+# unstable-slim (unstable/slim/Dockerfile)
+# wheezy, wheezy-20171009, 7.11, 7 (wheezy/Dockerfile)
+# wheezy-backports (wheezy/backports/Dockerfile)
+# wheezy-slim (wheezy/slim/Dockerfile)
 
 LABEL MAINTAINER=WaterBolik@163.com
 

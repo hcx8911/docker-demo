@@ -1,10 +1,13 @@
 FROM ubuntu
+# FROM ubuntu:16.04
+
 # https://hub.docker.com/_/ubuntu/
-# 12.04.5, 12.04, precise-20170214, precise (precise/Dockerfile)
-# 14.04.5, 14.04, trusty-20170214, trusty (trusty/Dockerfile)
-# 16.04, xenial-20170214, xenial, latest (xenial/Dockerfile)
-# 16.10, yakkety-20170224, yakkety, rolling (yakkety/Dockerfile)
-# 17.04, zesty-20170224, zesty, devel (zesty/Dockerfile)
+# # https://store.docker.com/images/ubuntu
+# 17.10, artful-20171116, artful, rolling (artful/Dockerfile)
+# 18.04, bionic-20171114, bionic, devel (bionic/Dockerfile)
+# 14.04, trusty-20171117, trusty (trusty/Dockerfile)
+# 16.04, xenial-20171114, xenial, latest (xenial/Dockerfile)
+# 17.04, zesty-20171114, zesty (zesty/Dockerfile)
 
 LABEL MAINTAINER=WaterBolik@163.com
 

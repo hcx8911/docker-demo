@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+    # Docker Daemon
+    docker-dind:
+        image: docker:dind
+        # image: docker:stable-dind
+        privileged: true
+        volumes:
+            - ./var-lib-docker:/var/lib/docker
+        ports:
+            - 2375:2375        
+    
+    # Docker Client
+    docker-client:
+        image: docker
+        # image: docker:stable
+        links: 
+            - docker-dind:docker
+
+
+
+

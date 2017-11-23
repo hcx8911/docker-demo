@@ -1,5 +1,6 @@
 FROM centos:6.9
 # https://hub.docker.com/_/centos/
+# https://store.docker.com/images/centos
 
 LABEL MAINTAINER=WaterBolik@163.com
 

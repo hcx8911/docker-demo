@@ -1,5 +1,4 @@
 FROM centos_systemd
-# https://hub.docker.com/_/centos/
 
 LABEL MAINTAINER=WaterBolik@163.com
 

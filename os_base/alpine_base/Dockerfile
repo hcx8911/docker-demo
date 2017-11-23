@@ -1,6 +1,16 @@
 FROM alpine
+# FROM alpine:3.6
 
 # https://hub.docker.com/_/alpine/
+# https://store.docker.com/images/alpine
+# 3.6, latest (versions/library-3.6/x86_64/Dockerfile)
+# edge (versions/library-edge/x86_64/Dockerfile)
+# 3.1 (versions/library-3.1/Dockerfile)
+# 3.2 (versions/library-3.2/Dockerfile)
+# 3.3 (versions/library-3.3/Dockerfile)
+# 3.4 (versions/library-3.4/Dockerfile)
+# 3.5 (versions/library-3.5/Dockerfile)
+
 # https://github.com/gliderlabs/docker-alpine.git
 # https://github.com/gliderlabs/docker-alpine/blob/0450fe826ccdedf63dd70da1ad953f1aaf932225/versions/library-3.6/x86_64/rootfs.tar.xz
 # FROM scratch
