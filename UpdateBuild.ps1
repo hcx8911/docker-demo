@@ -1,5 +1,8 @@
+# {<Unrestricted> | <RemoteSigned> | <AllSigned> | <Restricted> | <Default> | 
+# Èç¹û½Å±¾²»ÄÜÖ´ĞĞ£¬ÇëÏÈÖ´ĞĞÏÂÃæÕâ¾ä£¬È·±£»ñµÃ½Å±¾ÔËĞĞÈ¨ÏŞ£¬Ö´ĞĞÍê¿ÉÒÔ»Ö¸´È¨ÏŞ
+# Set-ExecutionPolicy RemoteSigned;
 
-$ROOTPATH = "B:/OpenSource/WaterBolik/docker-demo"
+$ROOTPATH = "B:\OpenSource\WaterBolik\docker-demo"
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
@@ -38,18 +41,12 @@ docker build -t docker-in-ubuntu ${ROOTPATH}/docker-in-docker/docker-in-ubuntu/
 
 docker build -t sshd ${ROOTPATH}/sshd/
 
-# æŸ¥çœ‹Dockerçš„ç£ç›˜ä½¿ç”¨æƒ…å†µ
+# ²é¿´DockerÊ¹ÓÃ´ÅÅÌÇé¿ö
 docker system df
 
-# æ¸…ç†danglingé•œåƒ(å‚è€ƒWhat are Docker : images?)å’Œå®¹å™¨ï¼Œä»¥åŠå¤±æ•ˆçš„æ•°æ®å·å’Œç½‘ç»œã€‚
+# ÇåÀíÁÙÊ±ÎÄ¼ş
 docker system prune -f
 
-# æŸ¥çœ‹Dockerçš„ç£ç›˜ä½¿ç”¨æƒ…å†µ
 docker system df
 
 docker images
-
-# åˆ é™¤pullè¿‡ç¨‹æˆ–è€…createè¿‡ç¨‹äº§ç”Ÿçš„ä¸´æ—¶é•œåƒ
-# docker stop $(docker ps -a -f status=exited -q)
-# docker rm $(docker ps -a -f status=exited -q)
-# docker rmi $(docker images --filter dangling=true -q)
