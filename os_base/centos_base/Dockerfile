@@ -26,27 +26,6 @@ RUN set -euxo pipefail \
         } > /etc/locale.conf \
     && echo "export LC_ALL=zh_CN.utf8" >> /etc/profile \
     && echo "end"     
-    # cat /etc/yum.conf
-    # cat /etc/locale.conf
-    # cat /etc/profile
-
-# use systemd
-ENV container docker
-RUN set -euxo pipefail \
-    && ( \
-            cd /lib/systemd/system/sysinit.target.wants/; \
-            for i in *; do \
-                [ $i == systemd-tmpfiles-setup.service ] \
-                || rm -f $i; \
-            done \
-        ); \
-    rm -f /lib/systemd/system/multi-user.target.wants/*;\
-    rm -f /etc/systemd/system/*.wants/*;\
-    rm -f /lib/systemd/system/local-fs.target.wants/*; \
-    rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-    rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-    rm -f /lib/systemd/system/basic.target.wants/*;\
-    rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 # 使用镜像源 
 # ARG YUM_MIRROR=mirrors.ustc.edu.cn 
@@ -73,19 +52,13 @@ RUN set -euxo pipefail \
     && yum -y update \
     && yum -y upgrade \ 
     && echo "end"      
-    # 查看镜像源 cat /etc/yum.repos.d/CentOS-Base.repo
 
-VOLUME [ "/sys/fs/cgroup" ]
-
-# 启用SystemCtl必须采用该方式
-CMD ["/usr/sbin/init"]
+CMD ["bin/bash"]  
 
 # 查看系统版本
 # $ rpm -qi centos-release
 
-# $ docker build -t centos_base ~/OpenSource/WaterBolik/docker-demo/os_base/centos_base/
 # $ docker build -t centos_base /Volumes/Work/OpenSource/WaterBolik/docker-demo/os_base/centos_base/
+# $ docker build -t centos_base ~/OpenSource/WaterBolik/docker-demo/os_base/centos_base/
 # $ docker build -t centos_base B:/OpenSource/WaterBolik/docker-demo/os_base/centos_base/
-# $ docker run -it --rm --name centos_base --privileged=true -d centos_base 
-# $ docker exec -it centos_base bash
-# $ docker stop centos_base
+# $ docker run -it --rm centos_base
