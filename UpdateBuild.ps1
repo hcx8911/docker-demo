@@ -1,7 +1,5 @@
-#!/bin/bash
 
-# ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
-ROOTPATH=/Users/Bolik/OpenSource/WaterBolik/docker-demo
+$ROOTPATH = "B:/OpenSource/WaterBolik/docker-demo"
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
@@ -49,5 +47,9 @@ docker system prune -f
 # 查看Docker的磁盘使用情况
 docker system df
 
-# 列出所有本地镜像
 docker images
+
+# 删除pull过程或者create过程产生的临时镜像
+# docker stop $(docker ps -a -f status=exited -q)
+# docker rm $(docker ps -a -f status=exited -q)
+# docker rmi $(docker images --filter dangling=true -q)
