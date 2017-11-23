@@ -1,5 +1,5 @@
 # {<Unrestricted> | <RemoteSigned> | <AllSigned> | <Restricted> | <Default> | 
-# 如果脚本不能执行，请先执行下面这句，确保获得脚本运行权限，执行完可以恢复权限
+# 濡傛灉鑴氭湰涓嶈兘鎵ц锛岃鍏堟墽琛屼笅闈㈣繖鍙ワ紝纭繚鑾峰緱鑴氭湰杩愯鏉冮檺锛屾墽琛屽畬鍙互鎭㈠鏉冮檺
 # Set-ExecutionPolicy RemoteSigned;
 
 $ROOTPATH = "B:\OpenSource\WaterBolik\docker-demo"
@@ -39,12 +39,17 @@ docker build -t docker-in-centos ${ROOTPATH}/docker-in-docker/docker-in-centos/
 docker build -t docker-in-debian ${ROOTPATH}/docker-in-docker/docker-in-debian/
 docker build -t docker-in-ubuntu ${ROOTPATH}/docker-in-docker/docker-in-ubuntu/
 
-docker build -t sshd ${ROOTPATH}/sshd/
+docker build -t alpine-sshd ${ROOTPATH}/sshd/alpine-sshd/
+docker build -t centos-sshd ${ROOTPATH}/sshd/centos-sshd/
 
-# 查看Docker使用磁盘情况
+docker build -t alpine-openjdk ${ROOTPATH}/openjdk/alpine-openjdk/
+
+docker build -t alpine-zookeeper ${ROOTPATH}/zookeeper/alpine-zookeeper/
+
+# 鏌ョ湅Docker浣跨敤纾佺洏鎯呭喌
 docker system df
 
-# 清理临时文件
+# 娓呯悊涓存椂鏂囦欢
 docker system prune -f
 
 docker system df

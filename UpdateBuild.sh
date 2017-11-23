@@ -38,7 +38,12 @@ docker build -t docker-in-centos ${ROOTPATH}/docker-in-docker/docker-in-centos/
 docker build -t docker-in-debian ${ROOTPATH}/docker-in-docker/docker-in-debian/
 docker build -t docker-in-ubuntu ${ROOTPATH}/docker-in-docker/docker-in-ubuntu/
 
-docker build -t sshd ${ROOTPATH}/sshd/
+docker build -t alpine-sshd ${ROOTPATH}/sshd/alpine-sshd/
+docker build -t centos-sshd ${ROOTPATH}/sshd/centos-sshd/
+
+docker build -t alpine-openjdk ${ROOTPATH}/openjdk/alpine-openjdk/
+
+docker build -t alpine-zookeeper ${ROOTPATH}/zookeeper/alpine-zookeeper/
 
 # 查看Docker的磁盘使用情况
 docker system df
