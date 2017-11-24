@@ -1,4 +1,4 @@
-# MediaWiki with MySQL
+# MediaWiki with PostgreSQL
 # https://hub.docker.com/_/mediawiki/
 # Access via "http://localhost:8080"
 #   (or "http://$(docker-machine ip):8080" if using docker-machine)
@@ -18,26 +18,24 @@ services:
     ports:
       - 8080:80
     links:
-      - database:mysql
+      - database
     volumes:
-      # - /var/www/html/images
+      - /var/www/html/images
       # After initial setup, download LocalSettings.php to the same directory as
       # this yaml and uncomment the following line and use compose to restart
       # the mediawiki service
-      - ./LocalSettings.php:/var/www/html/LocalSettings.php
+      # - ./LocalSettings.php:/var/www/html/LocalSettings.php
   database:
-    image: mysql
+    image: postgres
     restart: always
-    networks:
-      - bridge
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
     environment:
       # @see https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/DefaultSettings.php
-      MYSQL_DATABASE: 'media_wiki'
-      MYSQL_ROOT_PASSWORD: 'media_wiki'
-      MYSQL_USER: 'media_wiki'
-      MYSQL_PASSWORD: 'media_wiki'
-
+      - POSTGRES_ROOT_PASSWORD=media_wiki
+      - POSTGRES_PASSWORD=media_wiki
+      - POSTGRES_USER=media_wiki
+      - POSTGRES_DB=media_wiki
+      - POSTGRES_INITDB_ARGS="--encoding=UTF8"
 volumes:
-  mysql-data: {}
+  postgres-data: {}
