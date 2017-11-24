@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
-ROOTPATH=/Users/Bolik/OpenSource/WaterBolik/docker-demo
+ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
+# ROOTPATH=/Users/Bolik/OpenSource/WaterBolik/docker-demo
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
