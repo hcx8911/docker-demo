@@ -1,6 +1,6 @@
 FROM centos_systemd
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 # 配置ssh服务及免密访问
 RUN set -euxo pipefail \

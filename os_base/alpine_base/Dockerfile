@@ -16,7 +16,7 @@ FROM alpine
 # FROM scratch
 # ADD rootfs.tar.xz /
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 ENV TZ=Asia/Shanghai \
     LANG=zh_CN.UTF-8 \
@@ -29,22 +29,19 @@ ENV TZ=Asia/Shanghai \
 # ARG APK_MIRROR=mirrors.ustc.edu.cn 
 ARG APK_MIRROR=mirrors.aliyun.com 
 RUN set -euxo pipefail \
-    && sed -i "s/dl-cdn.alpinelinux.org/${APK_MIRROR}/" /etc/apk/repositories \    
-    && apk update \
-    && apk upgrade \
+    && sed -i "s/dl-cdn.alpinelinux.org/${APK_MIRROR}/" /etc/apk/repositories \  
     && apk add --update --no-cache \
-        tzdata \       
-		bash \
-        curl \	
+        tzdata \ 
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
+    && rm -rf /var/cache/apk/* \
     && echo "end"
     # && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
 
-CMD ["/bin/bash"]
+CMD ["/bin/sh"]
 
 # 编译及执行方法如下: 
 # docker build -t alpine_base /Volumes/Work/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/
-# docker build -t alpine_base /Users/Bolik/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/
+# docker build -t alpine_base ~/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/
 # docker build -t alpine_base B:\OpenSource\WaterBolik\docker-demo\os_base\alpine_base\
 # docker run -it --rm alpine_base 

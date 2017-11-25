@@ -32,7 +32,7 @@ FROM debian
 # wheezy-backports (wheezy/backports/Dockerfile)
 # wheezy-slim (wheezy/slim/Dockerfile)
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 ENV TZ=Asia/Shanghai \
     LANG=zh_CN.UTF-8 \

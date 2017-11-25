@@ -1,6 +1,6 @@
 FROM debian_base
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 # 安装Docker CE
 # ARG APT_MIRROR=download.docker.com

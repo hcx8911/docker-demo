@@ -1,6 +1,6 @@
 FROM centos_base
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 # use systemd
 ENV container docker

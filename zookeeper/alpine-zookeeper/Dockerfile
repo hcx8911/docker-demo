@@ -5,7 +5,7 @@ FROM alpine-openjdk
 # 3.4.11, 3.4, latest (3.4.11/Dockerfile)
 # 3.5.3-beta, 3.5 (3.5.3-beta/Dockerfile)
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 ENV ZOOKEEPER_VERSION=3.4.11 \
 	PATH=$PATH:/opt/zookeeper/bin/ \	
@@ -30,9 +30,11 @@ RUN set -euxo pipefail \
     && mkdir -p "$ZOO_DATA_LOG_DIR" "$ZOO_DATA_DIR" "$ZOO_CONF_DIR" \
 	&& mkdir -p /opt \
 	&& cd /opt \	
+    && apk update \
 	&& apk add --no-cache --virtual .build-deps \
         wget \
         gnupg \
+    && rm -rf /var/cache/apk/* \
     && wget -q "http://${APACHE_MIRROT}/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/zookeeper-${ZOOKEEPER_VERSION}.tar.gz" \
     && wget -q "http://www.apache.org/dist/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/zookeeper-${ZOOKEEPER_VERSION}.tar.gz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \

@@ -15,7 +15,7 @@ FROM centos
 # centos6.7, 6.7 (docker/Dockerfile)
 # centos6.6, 6.6 (docker/Dockerfile)
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 ENV TZ=Asia/Shanghai \
     LANG=zh_CN.utf8 \

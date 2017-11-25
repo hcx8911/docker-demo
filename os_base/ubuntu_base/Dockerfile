@@ -9,7 +9,7 @@ FROM ubuntu
 # 16.04, xenial-20171114, xenial, latest (xenial/Dockerfile)
 # 17.04, zesty-20171114, zesty (zesty/Dockerfile)
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 ENV TZ=Asia/Shanghai \
     LANG=zh_CN.UTF-8 \

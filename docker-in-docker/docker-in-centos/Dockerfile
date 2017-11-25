@@ -1,6 +1,6 @@
 FROM centos_systemd
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 # 安装 Docker CE
 # ARG YUM_MIRROR=download.docker.com

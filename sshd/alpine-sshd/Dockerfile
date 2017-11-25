@@ -1,12 +1,12 @@
 FROM alpine_base
 
-LABEL MAINTAINER=WaterBolik@163.com
+LABEL MAINTAINER="WaterBolik@163.com"
 
 # 配置ssh服务及免密访问
 RUN set -euxo pipefail \
-    && apk update \
     && apk add --update --no-cache \
 		openssh \
+    && rm -rf /var/cache/apk/* \
     && sed -i \
         -e 's~^#PermitRootLogin prohibit-password~PermitRootLogin yes~g' \
         -e 's~^#HostKey /etc/ssh/ssh_host_rsa_key~HostKey /etc/ssh/ssh_host_rsa_key~g' \

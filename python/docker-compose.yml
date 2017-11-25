@@ -1,0 +1,21 @@
+# https://store.docker.com/images/python
+
+version: '3'
+
+networks:
+  bridge:
+    driver: bridge
+
+services:
+  python:
+    image: python:3.6.3-alpine3.6
+    volumes:
+      - python3-src:/src
+
+  python3:
+    image: python:2.7.14-alpine3.6
+    volumes:
+      - python2-src:/src
+
+volumes:
+  mysql-data: {}
