@@ -46,6 +46,11 @@ docker build -t alpine-openjdk ${ROOTPATH}/openjdk/alpine-openjdk/
 
 docker build -t alpine-zookeeper ${ROOTPATH}/zookeeper/alpine-zookeeper/
 
+docker build -t alpine-nginx ${ROOTPATH}/nginx/alpine-nginx/
+
+docker build -t alpine-python2 ${ROOTPATH}/python/alpine-python2/
+docker build -t alpine-python3 ${ROOTPATH}/python/alpine-python3/
+
 # 查看Docker使用磁盘情况
 docker system df
 

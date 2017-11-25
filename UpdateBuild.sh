@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
-# ROOTPATH=/Users/Bolik/OpenSource/WaterBolik/docker-demo
+# ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
+ROOTPATH=~/OpenSource/WaterBolik/docker-demo
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
@@ -44,6 +44,11 @@ docker build -t centos-sshd ${ROOTPATH}/sshd/centos-sshd/
 docker build -t alpine-openjdk ${ROOTPATH}/openjdk/alpine-openjdk/
 
 docker build -t alpine-zookeeper ${ROOTPATH}/zookeeper/alpine-zookeeper/
+
+docker build -t alpine-nginx ${ROOTPATH}/nginx/alpine-nginx/
+
+docker build -t alpine-python2 ${ROOTPATH}/python/alpine-python2/
+docker build -t alpine-python3 ${ROOTPATH}/python/alpine-python3/
 
 # 查看Docker的磁盘使用情况
 docker system df
