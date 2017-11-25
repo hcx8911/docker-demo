@@ -54,16 +54,16 @@ RUN set -eux \
 # 设置时区和中文语言环境
 RUN set -eux \
     && apt-get update -y --fix-missing \
-    && apt-get install -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends --fix-missing \
         apt-utils \
         locales \
         tzdata \  
+        lsb \
     && apt-get upgrade -y \      
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
-    && apt-get autoclean  \
-    && apt-get autoremove  \
+    && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/* 
 
 CMD ["bin/bash"]  

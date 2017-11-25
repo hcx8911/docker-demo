@@ -8,6 +8,7 @@ docker pull alpine:latest
 docker pull alpine:3.6
 
 docker pull centos:latest
+docker pull centos:7
 docker pull centos:7.4.1708
 docker pull centos:6.9
 

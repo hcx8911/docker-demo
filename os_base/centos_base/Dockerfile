@@ -61,10 +61,11 @@ RUN set -euxo pipefail \
         -e "s|download.fedoraproject.org/pub|${YUM_MIRROR}|g" \
         -e "s|http:|https:|g" \
         /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo \
-    && yum repolist \       
-    && yum makecache fast \   
-    && yum -y update \
-    && yum -y upgrade \ 
+    && yum clean all \
+    # && yum repolist \       
+    # && yum makecache fast \   
+    # && yum -y update \
+    # && yum -y upgrade \ 
     && echo "end"      
 
 CMD ["bin/bash"]  

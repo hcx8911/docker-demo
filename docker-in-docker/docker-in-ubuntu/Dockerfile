@@ -22,8 +22,7 @@ RUN set -eux \
     && apt-get update -y --fix-missing \
     && apt-get install -y --no-install-recommends \
         docker-ce \ 
-    && apt-get autoclean \
-    && apt-get autoremove \ 
+    && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /etc/docker \
     &&  { \
