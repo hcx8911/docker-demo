@@ -1,21 +1,27 @@
 # https://store.docker.com/images/python
 
-version: '3'
+version: '2'
 
 networks:
   bridge:
     driver: bridge
 
 services:
-  python:
-    image: python:3.6.3-alpine3.6
-    volumes:
-      - python3-src:/src
+  python2:
+    build: alpine-python2
+    # image: python:2.7.14-alpine3.6
+    networks:
+      - bridge   
 
   python3:
-    image: python:2.7.14-alpine3.6
-    volumes:
-      - python2-src:/src
+    build: alpine-python3
+    # image: python:3.6.3-alpine3.6
+    networks:
+      - bridge
 
-volumes:
-  mysql-data: {}
+  python-demo:
+    build: python-demo
+    volumes:
+      - ./python-demo/app:/usr/src/app
+    networks:
+      - bridge

@@ -35,18 +35,10 @@ RUN set -euxo pipefail \
 	&& ln -s pip3 pip \
     && echo "end"
 
-VOLUME /usr/src/app
-
-WORKDIR /usr/src/app
-
-COPY requirements.txt ./
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-CMD [ "python", "./start.py" ]
+CMD ["python"]
 
 # 编译及执行方法如下: 
 # docker build -t alpine-python3 /Volumes/Work/OpenSource/WaterBolik/docker-demo/python/alpine-python3/
 # docker build -t alpine-python3 ~/OpenSource/WaterBolik/docker-demo/python/alpine-python3/
 # docker build -t alpine-python3 B:\OpenSource\WaterBolik\docker-demo\python\alpine-python3\
-# docker run -it --rm -v  ~/OpenSource/WaterBolik/docker-demo/python/alpine-python3/app:/usr/src/app alpine-python3 
+# docker run -it --rm alpine-python3 
