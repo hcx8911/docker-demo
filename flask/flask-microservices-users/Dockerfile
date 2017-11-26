@@ -9,10 +9,10 @@ VOLUME /usr/src/app
 
 WORKDIR /usr/src/app
 
-RUN set -euxo pipefail \   
-    && apk add --update --no-cache \
-    netcat-openbsd \   
-    && rm -rf /var/cache/apk/* 
+# RUN set -euxo pipefail \   
+#     && apk add --update --no-cache \
+#     netcat-openbsd \   
+#     && rm -rf /var/cache/apk/* 
 
 COPY requirements.txt ./
 
@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # CMD [ "python", "./start.py" ]
-CMD ["python", "manage.py", "runserver"]
+CMD python manage.py runserver -h 0.0.0.0
 
 # # install environment dependencies
 # RUN apt-get update -yqq \
