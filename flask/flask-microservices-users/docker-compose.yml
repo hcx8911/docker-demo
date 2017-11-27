@@ -48,3 +48,4 @@ services:
 #   \dt
 #   \q
 # $ docker-compose run users-service python manage.py test
+# $ docker-compose run users-service python manage.py seed_db
