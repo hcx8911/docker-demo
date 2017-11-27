@@ -1,0 +1,28 @@
+version: '2.1'
+
+services:
+
+  users-service:
+    container_name: users-service
+    build: users-service
+    volumes:
+      - ./users-service/app:/usr/src/app
+    ports:
+      - 8080:5000 # expose ports - HOST:CONTAINER
+    environment:
+      - APP_SETTINGS=project.config.DevelopmentConfig
+
+  users-db:
+    container_name: users-db
+    build: users-db
+    ports:
+        - 5435:5432  # expose ports - HOST:CONTAINER
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: exit 0
+
+# 示例
+# $ docker-compose run users-service python manage.py recreate_db
+# $ docker exec -ti $(docker ps -aqf "name=users-db") psql -U postgres

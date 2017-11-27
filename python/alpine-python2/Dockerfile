@@ -1,5 +1,5 @@
 # FROM python:2.7.14-alpine3.6
-FROM alpine-base
+FROM alpine_base
 
 # https://store.docker.com/images/python
 
@@ -7,8 +7,8 @@ LABEL MAINTAINER="WaterBolik@163.com"
 
 RUN set -euxo pipefail \   
     && apk add --update --no-cache \
-        python2 \   
-        py2-pip \    
+    python2 \   
+    py2-pip \    
     && rm -rf /var/cache/apk/* \
     && echo "end"
 

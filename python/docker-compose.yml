@@ -8,13 +8,15 @@ networks:
 
 services:
   python2:
-    build: alpine-python2
+    # build: alpine-python2
+    image: alpine-python2
     # image: python:2.7.14-alpine3.6
     networks:
       - bridge   
 
   python3:
-    build: alpine-python3
+    # build: alpine-python3
+    image: alpine-python3
     # image: python:3.6.3-alpine3.6
     networks:
       - bridge

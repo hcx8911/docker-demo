@@ -25,3 +25,7 @@
 # Werkzeug==0.12.2
 Flask>=0.12.2
 flask-script>=2.0.6
+# The SQLAlchemy ORM for Flask 
+Flask-SQLAlchemy>=2.3.2
+# Postgres for Python
+psycopg2>=2.7.3.2

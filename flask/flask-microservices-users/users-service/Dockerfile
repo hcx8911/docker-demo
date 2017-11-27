@@ -9,10 +9,14 @@ VOLUME /usr/src/app
 
 WORKDIR /usr/src/app
 
-# RUN set -euxo pipefail \   
-#     && apk add --update --no-cache \
-#     netcat-openbsd \   
-#     && rm -rf /var/cache/apk/* 
+RUN set -euxo pipefail \   
+    && apk add --update --no-cache \
+    # pkgconf \
+    # libpq \
+    # postgresql-libs \
+    postgresql-dev \
+    # netcat-openbsd \   
+    && rm -rf /var/cache/apk/* 
 
 COPY requirements.txt ./
 

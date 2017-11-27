@@ -51,6 +51,9 @@ docker build -t alpine-nginx ${ROOTPATH}/nginx/alpine-nginx/
 docker build -t alpine-python2 ${ROOTPATH}/python/alpine-python2/
 docker build -t alpine-python3 ${ROOTPATH}/python/alpine-python3/
 
+docker build -t users-service ${ROOTPATH}/flask/flask-microservices-users/users-service
+docker build -t users-db ${ROOTPATH}/flask/flask-microservices-users/users-db
+
 # 查看Docker的磁盘使用情况
 docker system df
 
@@ -62,3 +65,6 @@ docker system df
 
 # 列出所有本地镜像
 docker images
+
+
+
