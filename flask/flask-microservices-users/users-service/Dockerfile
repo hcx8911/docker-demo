@@ -9,18 +9,17 @@ VOLUME /usr/src/app
 
 WORKDIR /usr/src/app
 
-RUN set -euxo pipefail \   
-    && apk add --update --no-cache \
-    # pkgconf \
-    # libpq \
-    # postgresql-libs \
-    postgresql-dev \
-    # netcat-openbsd \   
-    && rm -rf /var/cache/apk/* 
-
 COPY requirements.txt ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN set -euxo pipefail \   
+    && apk add --update --no-cache \
+        postgresql-dev \
+	&& apk add --no-cache --virtual .fetch-deps \
+        build-base \
+        python3-dev \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apk del .fetch-deps \
+    && rm -rf /var/cache/apk/* 
 
 EXPOSE 5000
 
@@ -54,7 +53,7 @@ CMD python manage.py runserver -h 0.0.0.0
 
 
 # 编译及执行方法如下: 
-# docker build -t flask-microservices-users /Volumes/Work/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/
-# docker build -t flask-microservices-users ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/
-# docker build -t flask-microservices-users B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\
-# docker run -it --rm  -p 8080:5000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/app:/usr/src/app flask-microservices-users 
+# docker build -t users-service /Volumes/Work/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-service/
+# docker build -t users-service ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-service/
+# docker build -t users-service B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\users-service\
+# docker run -it --rm  -p 8080:5000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/app:/usr/src/app users-service 

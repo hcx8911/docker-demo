@@ -4,17 +4,26 @@ services:
 
   users-service:
     container_name: users-service
-    build: users-service
+    # build: users-service
+    image: users-service
     volumes:
       - ./users-service/app:/usr/src/app
     ports:
-      - 8080:5000 # expose ports - HOST:CONTAINER
+      - 80:5000 # expose ports - HOST:CONTAINER
     environment:
       - APP_SETTINGS=project.config.DevelopmentConfig
+      - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
+    depends_on:
+      users-db:
+        condition: service_healthy
+    links:
+      - users-db
 
   users-db:
     container_name: users-db
-    build: users-db
+    # build: users-db
+    image: users-db
     ports:
         - 5435:5432  # expose ports - HOST:CONTAINER
     environment:
@@ -23,6 +32,18 @@ services:
     healthcheck:
       test: exit 0
 
+  # 数据库管理Web服务
+  adminer:
+    container_name: adminer
+    image: adminer
+    ports:
+        - 8080:8080
+    links: 
+        - users-db:postgres
+
 # 示例
 # $ docker-compose run users-service python manage.py recreate_db
 # $ docker exec -ti $(docker ps -aqf "name=users-db") psql -U postgres
+#   \c users_dev
+#   \dt
+#   \q
