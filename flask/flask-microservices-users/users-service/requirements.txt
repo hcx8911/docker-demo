@@ -23,6 +23,8 @@
 # six==1.10.0
 # SQLAlchemy==1.1.10
 # Werkzeug==0.12.2
+
+# Flask：Python实现的Web开发微框架。
 Flask>=0.12.2
 flask-script>=2.0.6
 # The SQLAlchemy ORM for Flask 
@@ -31,3 +33,5 @@ Flask-SQLAlchemy>=2.3.2
 psycopg2>=2.7.3.2
 # Testing
 Flask-Testing>=0.6.2
+# Gunicorn：Python WSGI HTTP Server 高性能服务器，来源于Ruby的Unicorn项目。
+gunicorn>=19.7.1

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
-ROOTPATH=~/OpenSource/WaterBolik/docker-demo
+ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
+# ROOTPATH=~/OpenSource/WaterBolik/docker-demo
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
@@ -53,6 +53,7 @@ docker build -t alpine-python3 ${ROOTPATH}/python/alpine-python3/
 
 docker build -t users-service ${ROOTPATH}/flask/flask-microservices-users/users-service
 docker build -t users-db ${ROOTPATH}/flask/flask-microservices-users/users-db
+docker build -t users-nginx ${ROOTPATH}/flask/flask-microservices-users/users-nginx/
 
 # 查看Docker的磁盘使用情况
 docker system df

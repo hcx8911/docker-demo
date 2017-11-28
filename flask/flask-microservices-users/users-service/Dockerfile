@@ -13,11 +13,12 @@ COPY requirements.txt ./
 
 RUN set -euxo pipefail \   
     && apk add --update --no-cache \
-        postgresql-dev \
-	&& apk add --no-cache --virtual .fetch-deps \
-        build-base \
-        python3-dev \
-    && pip install --no-cache-dir -r requirements.txt \
+    postgresql-dev \
+    && apk add --virtual .fetch-deps \
+    build-base \
+    python-dev \
+    && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    --no-cache-dir --upgrade -r requirements.txt \
     && apk del .fetch-deps \
     && rm -rf /var/cache/apk/* 
 
