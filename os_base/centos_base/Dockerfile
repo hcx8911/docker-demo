@@ -1,4 +1,5 @@
 FROM centos
+# FROM centos:7
 # FROM centos:7.4.1708
 
 # https://hub.docker.com/_/centos/
@@ -21,7 +22,7 @@ ENV TZ=Asia/Shanghai \
     LANG=zh_CN.utf8 \
     LANGUAGE=zh_CN.utf8:en_US.utf8:C.utf8 \
     SUPPORTED=zh_CN.utf8:en_US.utf8:C.utf8 \
-    LC_ALL=zh_CN.utf8 
+    LC_ALL=zh_CN.utf8
 
 # 设置时区和中文语言环境
 RUN set -euxo pipefail \
@@ -29,46 +30,46 @@ RUN set -euxo pipefail \
     && echo $TZ > /etc/timezone \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
     && sed -i \
-        -e 's~^override_install_langs=en_US.utf8~override_install_langs=zh_CN.utf8~g' \
-        /etc/yum.conf \
+    -e 's~^override_install_langs=en_US.utf8~override_install_langs=zh_CN.utf8~g' \
+    /etc/yum.conf \
     && { \
-            echo 'LANG="zh_CN.utf8"'; \ 
-            echo 'LANGUAGE="zh_CN.utf8:en_US.utf8:C.utf8"'; \
-            echo 'SUPPORTED="zh_CN.utf8:en_US.utf8:C.utf8"'; \
-            echo 'LC_ALL="zh_CN.utf8"'; \
-            echo 'SYSFONT="lat0-sun16"'; \
-        } > /etc/locale.conf \
+    echo 'LANG="zh_CN.utf8"'; \
+    echo 'LANGUAGE="zh_CN.utf8:en_US.utf8:C.utf8"'; \
+    echo 'SUPPORTED="zh_CN.utf8:en_US.utf8:C.utf8"'; \
+    echo 'LC_ALL="zh_CN.utf8"'; \
+    echo 'SYSFONT="lat0-sun16"'; \
+    } > /etc/locale.conf \
     && echo "export LC_ALL=zh_CN.utf8" >> /etc/profile \
-    && echo "end"     
+    && echo "end"
 
-# 使用镜像源 
-# ARG YUM_MIRROR=mirrors.ustc.edu.cn 
-# ARG YUM_MIRROR=mirror.tuna.tsinghua.edu.cn 
+# 使用镜像源
+# ARG YUM_MIRROR=mirrors.ustc.edu.cn
+# ARG YUM_MIRROR=mirror.tuna.tsinghua.edu.cn
 ARG YUM_MIRROR=mirrors.aliyun.com
 RUN set -euxo pipefail \
     && sed -i \
-        -e "s|^mirrorlist=|#mirrorlist=|g" \    
-        -e "s|^#baseurl=|baseurl=|g" \    
-        -e "s|mirror.centos.org|${YUM_MIRROR}|g" \    
-        -e "s|vault.centos.org|${YUM_MIRROR}|g" \    
-        -e "s|http:|https:|g" \
-        /etc/yum.repos.d/* \ 
+    -e "s|^mirrorlist=|#mirrorlist=|g" \
+    -e "s|^#baseurl=|baseurl=|g" \
+    -e "s|mirror.centos.org|${YUM_MIRROR}|g" \
+    -e "s|vault.centos.org|${YUM_MIRROR}|g" \
+    -e "s|http:|https:|g" \
+    /etc/yum.repos.d/* \
     && yum -y install \
-        epel-release \
+    epel-release \
     && sed -i \
-        -e "s|^mirrorlist=|#mirrorlist=|g" \
-        -e "s|^#baseurl=|baseurl=|g" \
-        -e "s|download.fedoraproject.org/pub|${YUM_MIRROR}|g" \
-        -e "s|http:|https:|g" \
-        /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo \
+    -e "s|^mirrorlist=|#mirrorlist=|g" \
+    -e "s|^#baseurl=|baseurl=|g" \
+    -e "s|download.fedoraproject.org/pub|${YUM_MIRROR}|g" \
+    -e "s|http:|https:|g" \
+    /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo \
     && yum clean all \
-    # && yum repolist \       
-    # && yum makecache fast \   
+    # && yum repolist \
+    # && yum makecache fast \
     # && yum -y update \
-    # && yum -y upgrade \ 
-    && echo "end"      
+    # && yum -y upgrade \
+    && echo "end"
 
-CMD ["bin/bash"]  
+CMD ["bin/bash"]
 
 # 查看系统版本
 # $ rpm -qi centos-release

@@ -4,12 +4,12 @@ services:
 
   users-service:
     container_name: users-service
-    # build: users-service
-    image: users-service
+    build: users-service
+    # image: users-service
     volumes:
       - ./users-service/app:/usr/src/app
     ports:
-      - '5000' 
+      - '5000'
     environment:
       - APP_SETTINGS=project.config.DevelopmentConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
@@ -23,10 +23,10 @@ services:
 
   users-db:
     container_name: users-db
-    # build: users-db
-    image: users-db
+    build: users-db
+    # image: users-db
     ports:
-        - '5432'  
+        - '5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -35,8 +35,8 @@ services:
 
   users-nginx:
     container_name: users-nginx
-    # build: users-nginx
-    image: users-nginx
+    build: users-nginx
+    # image: users-nginx
     restart: always
     ports:
       - '80:80'
@@ -52,18 +52,27 @@ services:
     image: adminer
     ports:
         - '8080:8080'
-    links: 
+    links:
         - users-db:postgres
 
-# 示例
-# 重新创建数据库
+# 编译镜像
+# $ docker-compose build
+# 运行容器组
+# $ docker-compose up -d
+# 创建数据库
 # $ docker-compose run users-service python manage.py recreate_db
+# 创建测试数据
+# $ docker-compose run users-service python manage.py seed_db
+# 测试
+# $ docker-compose run users-service python manage.py test
+# 停止容器组
+# $ docker-compose stop
+# 终止容器组
+# $ docker-compose down
+# 强制重新编译镜像
+# $ docker-compose build --no-cache
 # 使用psgl连接数据库进行测试
-# $ docker exec -ti $(docker ps -aqf "name=users-db") psql -U postgres
+# $ docker exec -ti users-db psql -U postgres -W
 #   \c users_dev
 #   \dt
 #   \q
-# 执行测试
-# $ docker-compose run users-service python manage.py test
-# 创建测试数据
-# $ docker-compose run users-service python manage.py seed_db
