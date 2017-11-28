@@ -16,7 +16,7 @@ RUN set -euxo pipefail \
     postgresql-dev \
     && apk add --virtual .fetch-deps \
     build-base \
-    python-dev \
+    python3-dev \
     && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple \
     --no-cache-dir --upgrade -r requirements.txt \
     && apk del .fetch-deps \
