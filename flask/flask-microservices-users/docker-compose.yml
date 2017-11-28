@@ -4,8 +4,9 @@ services:
 
   users-service:
     container_name: users-service
-    build: users-service
-    # image: users-service
+    # build: users-service
+    # build: https://github.com/realpython/flask-microservices-users.git
+    image: users-service
     volumes:
       - ./users-service/app:/usr/src/app
     ports:
@@ -23,8 +24,9 @@ services:
 
   users-db:
     container_name: users-db
-    build: users-db
-    # image: users-db
+    # build: users-db
+    # build: https://github.com/realpython/flask-microservices-users.git#master:project/db
+    image: users-db
     ports:
         - '5432'
     environment:
@@ -35,8 +37,8 @@ services:
 
   users-nginx:
     container_name: users-nginx
-    build: users-nginx
-    # image: users-nginx
+    # build: users-nginx
+    image: users-nginx
     restart: always
     ports:
       - '80:80'
@@ -57,7 +59,7 @@ services:
 
 # 编译镜像
 # $ docker-compose build
-# 运行容器组
+# 创建和运行容器组
 # $ docker-compose up -d
 # 创建数据库
 # $ docker-compose run users-service python manage.py recreate_db
@@ -65,9 +67,11 @@ services:
 # $ docker-compose run users-service python manage.py seed_db
 # 测试
 # $ docker-compose run users-service python manage.py test
+# 覆盖测试
+# $ docker-compose run users-service python manage.py cov
 # 停止容器组
 # $ docker-compose stop
-# 终止容器组
+# 终止容器组运行并删除容器
 # $ docker-compose down
 # 强制重新编译镜像
 # $ docker-compose build --no-cache
