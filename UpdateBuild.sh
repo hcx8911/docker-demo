@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
-# ROOTPATH=~/OpenSource/WaterBolik/docker-demo
+# ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
+ROOTPATH=~/OpenSource/WaterBolik/docker-demo
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
@@ -26,7 +26,7 @@ docker pull docker:dind
 # docker pull postgres:alpine
 # docker pull adminer
 
-# os base images 
+# os base images
 docker build -t alpine_base ${ROOTPATH}/os_base/alpine_base/
 docker build -t centos_base ${ROOTPATH}/os_base/centos_base/
 docker build -t centos6_base ${ROOTPATH}/os_base/centos6_base/
@@ -66,6 +66,3 @@ docker system df
 
 # 列出所有本地镜像
 docker images
-
-
-
