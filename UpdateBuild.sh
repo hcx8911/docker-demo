@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# ROOTPATH=/Volumes/Work/OpenSource/WaterBolik/docker-demo
 ROOTPATH=~/OpenSource/WaterBolik/docker-demo
 
 # base image pull -------------------------------------------------------------
@@ -24,8 +23,8 @@ docker pull docker:dind
 
 # # docker pull mysql
 # docker pull mysql/mysql-server
-# docker pull postgres:alpine
-# docker pull adminer
+docker pull postgres:alpine
+docker pull adminer
 
 # os base images
 docker build -t alpine_base ${ROOTPATH}/os_base/alpine_base/
@@ -51,6 +50,8 @@ docker build -t alpine-nginx ${ROOTPATH}/nginx/alpine-nginx/
 
 docker build -t alpine-python2 ${ROOTPATH}/python/alpine-python2/
 docker build -t alpine-python3 ${ROOTPATH}/python/alpine-python3/
+
+docker build -t alpine-nodejs ${ROOTPATH}/nodejs/alpine-nodejs/
 
 docker build -t users-service ${ROOTPATH}/flask/flask-microservices-users/users-service
 docker build -t users-db ${ROOTPATH}/flask/flask-microservices-users/users-db

@@ -6,101 +6,103 @@ LABEL MAINTAINER="WaterBolik@163.com"
 # https://store.docker.com/images/python
 # FROM python:3.6.3-alpine3.6
 # https://github.com/docker-library/python/blob/master/3.6/alpine3.6/Dockerfile
-ARG GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
+ARG PYTHON_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
 ARG PYTHON_VERSION=3.6.3
 ARG PYTHON_PIP_VERSION=9.0.1
 RUN set -euxo pipefail \
 	&& apk add --update --no-cache --virtual .fetch-deps \
-	ca-certificates \
-	gnupg \
-	libressl \
-	tar \
-	xz \
+		ca-certificates \
+		gnupg \
+		curl \
+		tar \
+		xz \
 	\
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
-	&& wget -O -l python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
-	&& wget -O -l python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
+	&& ( \
+		gpg --keyserver pgp.mit.edu --recv-keys "$PYTHON_KEY" || \
+		gpg --keyserver keyserver.pgp.com --recv-keys "$PYTHON_KEY" || \
+		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$PYTHON_KEY" \
+	) \
+	&& curl -fSL -o python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+	&& curl -fSL -o python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
 	&& gpg --batch --verify python.tar.xz.asc python.tar.xz \
-	&& rm -rf "$GNUPGHOME" python.tar.xz.asc \
 	&& mkdir -p /usr/src/python \
 	&& tar -xJC /usr/src/python --strip-components=1 -f python.tar.xz \
-	&& rm python.tar.xz \
+	&& rm -f python.tar.xz.asc \
+	&& rm -f python.tar.xz \
+	&& rm -rf "$GNUPGHOME" \
 	\
 	&& apk add --no-cache --virtual .build-deps  \
-	bzip2-dev \
-	coreutils \
-	dpkg-dev dpkg \
-	expat-dev \
-	gcc \
-	gdbm-dev \
-	libc-dev \
-	libffi-dev \
-	linux-headers \
-	make \
-	ncurses-dev \
-	libressl \
-	libressl-dev \
-	pax-utils \
-	readline-dev \
-	sqlite-dev \
-	tcl-dev \
-	tk \
-	tk-dev \
-	xz-dev \
-	zlib-dev \
+		bzip2-dev \
+		coreutils \
+		dpkg-dev dpkg \
+		expat-dev \
+		gcc \
+		gdbm-dev \
+		libc-dev \
+		libffi-dev \
+		linux-headers \
+		make \
+		ncurses-dev \
+		libressl \
+		libressl-dev \
+		pax-utils \
+		readline-dev \
+		sqlite-dev \
+		tcl-dev \
+		tk \
+		tk-dev \
+		xz-dev \
+		zlib-dev \
 	\
 	&& cd /usr/src/python \
 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 	&& ./configure \
-	--build="$gnuArch" \
-	--enable-loadable-sqlite-extensions \
-	--enable-shared \
-	--with-system-expat \
-	--with-system-ffi \
-	--without-ensurepip \
+		--build="$gnuArch" \
+		--enable-loadable-sqlite-extensions \
+		--enable-shared \
+		--with-system-expat \
+		--with-system-ffi \
+		--without-ensurepip \
 	&& make -j "$(nproc)" \
 	&& make install \
 	\
 	&& runDeps="$( \
-	scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
-	| tr ',' '\n' \
-	| sort -u \
-	| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
+		| tr ',' '\n' \
+		| sort -u \
+		| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)" \
-	&& apk add --virtual .python-rundeps $runDeps \
-	\
-	&& find /usr/local -depth \
-	\( \
-	\( -type d -a \( -name test -o -name tests \) \) \
-	-o \
-	\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-	\) -exec rm -rf '{}' + \
+	&& apk add --virtual .python-rundeps \
+		$runDeps \
+	&& cd ~ \
 	&& rm -rf /usr/src/python \
 	\
-	&& wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
+	&& curl -fSL -o get-pip.py "https://bootstrap.pypa.io/get-pip.py" \
 	&& python3 get-pip.py \
-	--disable-pip-version-check \
-	--no-cache-dir \
-	"pip==$PYTHON_PIP_VERSION" \
-	&& pip3 --version \
-	&& find /usr/local -depth \
-	\( \
-	\( -type d -a \( -name test -o -name tests \) \) \
-	-o \
-	\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
-	\) -exec rm -rf '{}' + \
+		--disable-pip-version-check \
+		--no-cache-dir \
+		"pip==$PYTHON_PIP_VERSION" \
 	&& rm -f get-pip.py \
-	&& cd /usr/bin \
+	&& pip3 --version \
+	\
+	&& python3_path="$(which python3)" \
+	&& cd "${python3_path%/*}" \
 	&& ln -s idle3 idle \
 	&& ln -s pydoc3 pydoc \
 	&& ln -s python3 python \
 	&& ln -s python3-config python-config \
-	&& ln -s pip3 pip \
+	\
+	&& find /usr/local -depth \
+		\( \
+			\( -type d -a \( -name test -o -name tests \) \) \
+			-o \
+			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+		\) -exec rm -rf '{}' + \
+	\
 	&& apk del .fetch-deps \
 	&& apk del .build-deps \
-	&& rm -rf /var/cache/apk/* \
-	&& echo "end"
+	&& rm -rf /var/cache/apk/*
 
 CMD ["python"]
 
