@@ -31,8 +31,8 @@ RUN set -euxo pipefail \
 
 # 使用镜像源
 # ARG YUM_MIRROR=mirrors.ustc.edu.cn
-# ARG YUM_MIRROR=mirror.tuna.tsinghua.edu.cn
-ARG YUM_MIRROR=mirrors.aliyun.com
+ARG YUM_MIRROR=mirror.tuna.tsinghua.edu.cn
+# ARG YUM_MIRROR=mirrors.aliyun.com
 RUN set -euxo pipefail \
     && sed -i \
     -e "s|^mirrorlist=|#mirrorlist=|g" \

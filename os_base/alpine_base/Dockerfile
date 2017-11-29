@@ -25,9 +25,9 @@ ENV TZ=Asia/Shanghai \
     LC_ALL=C.UTF-8
 
 # 设置时区、中文、镜像源
-# ARG APK_MIRROR=mirror.tuna.tsinghua.edu.cn
+ARG APK_MIRROR=mirror.tuna.tsinghua.edu.cn
 # ARG APK_MIRROR=mirrors.ustc.edu.cn
-ARG APK_MIRROR=mirrors.aliyun.com
+# ARG APK_MIRROR=mirrors.aliyun.com
 RUN set -euxo pipefail \
     && sed -i "s/dl-cdn.alpinelinux.org/${APK_MIRROR}/" /etc/apk/repositories \
     && apk add --update --no-cache \
@@ -45,3 +45,9 @@ CMD ["/bin/sh"]
 # docker build -t alpine_base ~/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/
 # docker build -t alpine_base B:\OpenSource\WaterBolik\docker-demo\os_base\alpine_base\
 # docker run -it --rm alpine_base
+
+# get https://github.com/containerd/containerd/releases/download/v1.0.0-beta.3/containerd-1.0.0-beta.3.linux-amd64.tar.gz \
+# && tar -xzvf containerd-1.0.0-beta.3.linux-amd64.tar.gz -C /usr/local \
+# && wget https://github.com/opencontainers/runc/releases/download/v1.0.0-rc4/runc.amd64 -P /usr/local/bin \
+# && chmod +x /usr/local/bin/runc.amd64 \
+# && mv /usr/local/bin/runc.amd64 /usr/local/bin/runc

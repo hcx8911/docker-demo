@@ -17,22 +17,22 @@ LABEL MAINTAINER="WaterBolik@163.com"
 #     && echo "end"
 
 # 编译安装
-# https://github.com/docker-library/python/blob/1d59eb2dd813c64891bf554a8ea01754aba25816/2.7/alpine3.6/Dockerfile
+# https://github.com/docker-library/python/blob/master/2.7/alpine3.6/Dockerfile
 ARG GPG_KEY=C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF
 ARG PYTHON_VERSION=2.7.14
 ARG PYTHON_PIP_VERSION=9.0.1
 RUN set -euxo pipefail \
-    && apk add --no-cache --virtual .fetch-deps \
+    && apk add --update --no-cache --virtual .fetch-deps \
     ca-certificates \
     gnupg \
     libressl \
     tar \
     xz \
     \
-    && wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
-    && wget -O python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPG_KEY" \
+    && wget -O -l python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
+    && wget -O -l python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
     && gpg --batch --verify python.tar.xz.asc python.tar.xz \
     && rm -rf "$GNUPGHOME" python.tar.xz.asc \
     && mkdir -p /usr/src/python \
