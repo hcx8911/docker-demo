@@ -22,26 +22,26 @@ ENV TZ=Asia/Shanghai \
     LANG=zh_CN.UTF-8 \
     LANGUAGE=zh_CN.UTF-8:en_US.UTF-8:C.UTF-8 \
     SUPPORTED=zh_CN.UTF-8:en_US.UTF-8:C.UTF-8 \
-    LC_ALL=zh_CN.UTF-8 
+    LC_ALL=C.UTF-8
 
 # 设置时区、中文、镜像源
-# ARG APK_MIRROR=mirror.tuna.tsinghua.edu.cn 
-# ARG APK_MIRROR=mirrors.ustc.edu.cn 
-ARG APK_MIRROR=mirrors.aliyun.com 
+# ARG APK_MIRROR=mirror.tuna.tsinghua.edu.cn
+# ARG APK_MIRROR=mirrors.ustc.edu.cn
+ARG APK_MIRROR=mirrors.aliyun.com
 RUN set -euxo pipefail \
-    && sed -i "s/dl-cdn.alpinelinux.org/${APK_MIRROR}/" /etc/apk/repositories \  
+    && sed -i "s/dl-cdn.alpinelinux.org/${APK_MIRROR}/" /etc/apk/repositories \
     && apk add --update --no-cache \
-        tzdata \ 
+    tzdata \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
     && rm -rf /var/cache/apk/* \
     && echo "end"
-    # && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
+# && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
 
 CMD ["/bin/sh"]
 
-# 编译及执行方法如下: 
+# 编译及执行方法如下:
 # docker build -t alpine_base /Volumes/Work/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/
 # docker build -t alpine_base ~/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/
 # docker build -t alpine_base B:\OpenSource\WaterBolik\docker-demo\os_base\alpine_base\
-# docker run -it --rm alpine_base 
+# docker run -it --rm alpine_base
