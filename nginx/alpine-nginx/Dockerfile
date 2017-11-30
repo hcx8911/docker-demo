@@ -36,7 +36,7 @@ RUN set -euxo pipefail \
             gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
             gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
             gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
-            break; \
+            false; \
         done \
     \
     && curl -fSL -o nginx.tar.gz.asc http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc \

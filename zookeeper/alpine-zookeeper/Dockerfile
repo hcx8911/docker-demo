@@ -21,7 +21,6 @@ ENV ZOOKEEPER_VERSION=3.4.11 \
 COPY docker-entrypoint.sh /
 
 # https://github.com/31z4/zookeeper-docker/blob/master/3.4.11/Dockerfile
-# ARG ZOOKEEPER_KEY=C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D
 ARG DISTRO_NAME=zookeeper-3.4.11
 ARG APACHE_MIRROT=mirrors.ustc.edu.cn/apache
 # ARG APACHE_MIRROT=mirror.tuna.tsinghua.edu.cn/apache
@@ -40,7 +39,7 @@ RUN set -euxo pipefail \
     \
     && export GNUPGHOME="$(mktemp -d)" \
     &&  for key in \
-            C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D \
+            D0BC8D8A4E90A40AFDFC43B3E22A746A68E327C1 \
         ; do \
             gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
             gpg --keyserver-options timeout=10 --keyserver keyserver.pgp.com --recv-keys "$key" || \

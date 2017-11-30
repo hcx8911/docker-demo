@@ -36,12 +36,12 @@ RUN set -euxo pipefail \
             77984A986EBC2AA786BC0F66B01FBB92821C587A \
             6A010C5166006599AA17F08146C2130DFD2497F5 \
         ; do \
-            gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
-            gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
             gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
             gpg --keyserver-options timeout=10 --keyserver keyserver.pgp.com --recv-keys "$key" || \
             gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
-            break; \
+            gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
+            false; \
         done \
     \
     && curl -SLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \

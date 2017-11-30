@@ -21,12 +21,12 @@ RUN set -euxo pipefail \
     &&  for key in \
             0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D \
         ; do \
-            gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" pgp.mit.edu || \
-            gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" keyserver.pgp.com || \
-            gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" hkp://keyserver.ubuntu.com:80 \
-            gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" hkp://p80.pool.sks-keyservers.net:80 \
-            gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" ha.pool.sks-keyservers.net || \
-            break; \
+            gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
+            gpg --keyserver-options timeout=10 --keyserver keyserver.pgp.com --recv-keys "$key" || \
+            gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
+            false; \
         done \
     \
 	&& curl -fSL -o python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
