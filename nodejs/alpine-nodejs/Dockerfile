@@ -47,7 +47,7 @@ RUN set -euxo pipefail \
     \
     && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz" \
     && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt" \
-    && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.sig" \
+    && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.sig" \
     \
     && gpg --verify SHASUMS256.txt.sig SHASUMS256.txt \
     && grep "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt | sha256sum -c - \
