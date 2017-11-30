@@ -17,35 +17,33 @@ ENV TZ=Asia/Shanghai \
     SUPPORTED=zh_CN.UTF-8:en_US.UTF-8:C.UTF-8 \
     LC_ALL=zh_CN.UTF-8
 
-# 使用apt镜像
+# 使用镜像源、时区、中文
 # ARG APT_MIRROR=mirrors.ustc.edu.cn
-ARG APT_MIRROR=mirrors.tuna.tsinghua.edu.cn
-# ARG APT_MIRROR=mirrors.aliyun.com
+# ARG APT_MIRROR=mirrors.tuna.tsinghua.edu.cn
+ARG APT_MIRROR=mirrors.aliyun.com
 RUN set -eux \
-    && sed -i \
-    -e "s|archive.ubuntu.com|${APT_MIRROR}|g" \
-    -e "s|security.ubuntu.com|${APT_MIRROR}|g" \
-    /etc/apt/sources.list \
-    && echo "end"
-
-# 设置时区和中文语言环境
-RUN set -eux \
+    &&  sed -i \
+            -e "s|archive.ubuntu.com|${APT_MIRROR}|g" \
+            -e "s|security.ubuntu.com|${APT_MIRROR}|g" \
+        /etc/apt/sources.list \
+    \
     && apt-get update -y --fix-missing \
     && apt-get install -y --no-install-recommends \
-    apt-utils \
-    tzdata \
-    language-pack-zh-hans \
-    locales \
-    && apt-get upgrade -y \
+        apt-utils \
+        tzdata \
+        language-pack-zh-hans \
+        locales \
+    \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
+    \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
+    \
     && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
 CMD ["bin/bash"]
 
-# $ docker build -t ubuntu_base /Volumes/Work/OpenSource/WaterBolik/docker-demo/os_base/ubuntu_base/
 # $ docker build -t ubuntu_base ~/OpenSource/WaterBolik/docker-demo/os_base/ubuntu_base/
 # $ docker build -t ubuntu_base B:/OpenSource/WaterBolik/docker-demo/os_base/ubuntu_base/
 # $ docker run -it --rm ubuntu_base

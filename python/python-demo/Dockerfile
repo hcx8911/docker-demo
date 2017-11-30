@@ -16,8 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 CMD [ "python", "./start.py" ]
 
-# 编译及执行方法如下: 
-# docker build -t python-demo /Volumes/Work/OpenSource/WaterBolik/docker-demo/python/python-demo/
+# 编译及执行方法如下:
 # docker build -t python-demo ~/OpenSource/WaterBolik/docker-demo/python/python-demo/
 # docker build -t python-demo B:\OpenSource\WaterBolik\docker-demo\python\python-demo\
-# docker run -it --rm -v  ~/OpenSource/WaterBolik/docker-demo/python/python-demo/app:/usr/src/app python-demo 
+# docker run -it --rm -v  ~/OpenSource/WaterBolik/docker-demo/python/python-demo/app:/usr/src/app python-demo

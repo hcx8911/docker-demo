@@ -30,13 +30,17 @@ RUN set -euxo pipefail \
         xz \
     \
     && export GNUPGHOME="$(mktemp -d)" \
-    && for python_key in \
-        C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF \
-    ; do \
-        gpg --keyserver pgp.mit.edu --recv-keys "$python_key" || \
-        gpg --keyserver keyserver.pgp.com --recv-keys "$python_key" || \
-        gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$python_key" ; \
-    done \
+    &&  for key in \
+            C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF \
+        ; do \
+            gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
+            gpg --keyserver-options timeout=10 --keyserver keyserver.pgp.com --recv-keys "$key" || \
+            gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
+            false; \
+        done \
+    \
     && curl -fSL -o python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \
     && curl -fSL -o python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz" \
     && gpg --batch --verify python.tar.xz.asc python.tar.xz \
@@ -108,7 +112,6 @@ RUN set -euxo pipefail \
 CMD ["python"]
 
 # 编译及执行方法如下:
-# docker build -t alpine-python2 /Volumes/Work/OpenSource/WaterBolik/docker-demo/python/alpine-python2/
 # docker build -t alpine-python2 ~/OpenSource/WaterBolik/docker-demo/python/alpine-python2/
 # docker build -t alpine-python2 B:\OpenSource\WaterBolik\docker-demo\python\alpine-python2\
 # docker run -it --rm alpine-python2

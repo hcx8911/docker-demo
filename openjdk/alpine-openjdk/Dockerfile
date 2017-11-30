@@ -9,22 +9,24 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk/jre \
     CLASSPATH=/usr/lib/jvm/java-1.8-openjdk/jre/lib \
 	PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-RUN set -euxo pipefail \    
+ARG JAVA_ALPINE_VERSION=8.131.11-r2
+RUN set -euxo pipefail \
     && apk add --update --no-cache \
-		openjdk8-jre \
-    && rm -rf /var/cache/apk/* \
-	&& { \
-		echo '#!/bin/sh'; \
-		echo 'set -e'; \
-		echo; \
-		echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
-	} > /usr/local/bin/docker-java-home \
+		openjdk8-jre>="$JAVA_ALPINE_VERSION" \
+	\
+	&& 	{ \
+			echo '#!/bin/sh'; \
+			echo 'set -e'; \
+			echo; \
+			echo 'dirname "$(dirname "$(readlink -f "$(which javac || which java)")")"'; \
+		} \
+		> /usr/local/bin/docker-java-home \
 	&& chmod +x /usr/local/bin/docker-java-home \
-	&& [ "$JAVA_HOME" = "$(docker-java-home)" ] \   
-    && echo "end"
+	&& [ "$JAVA_HOME" = "$(docker-java-home)" ] \
+	\
+	&& rm -rf /var/cache/apk/*
 
-# 编译及执行方法如下: 
-# docker build -t alpine-openjdk /Volumes/Work/OpenSource/WaterBolik/docker-demo/openjdk/alpine-openjdk/
+# 编译及执行方法如下:
 # docker build -t alpine-openjdk ~/OpenSource/WaterBolik/docker-demo/openjdk/alpine-openjdk/
 # docker build -t alpine-openjdk B:\OpenSource\WaterBolik\docker-demo\openjdk\alpine-openjdk\
-# docker run -it --rm alpine-openjdk 
+# docker run -it --rm alpine-openjdk
