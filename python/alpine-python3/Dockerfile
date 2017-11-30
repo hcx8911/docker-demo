@@ -26,7 +26,7 @@ RUN set -euxo pipefail \
             gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" hkp://keyserver.ubuntu.com:80 \
             gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" hkp://p80.pool.sks-keyservers.net:80 \
             gpg --keyserver-options timeout=10 --keyserver --recv-keys "$key" ha.pool.sks-keyservers.net || \
-            false; \
+            break; \
         done \
     \
 	&& curl -fSL -o python.tar.xz.asc "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc" \

@@ -21,7 +21,7 @@ ENV ZOOKEEPER_VERSION=3.4.11 \
 COPY docker-entrypoint.sh /
 
 # https://github.com/31z4/zookeeper-docker/blob/master/3.4.11/Dockerfile
-ARG ZOOKEEPER_KEY=C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D
+# ARG ZOOKEEPER_KEY=C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D
 ARG DISTRO_NAME=zookeeper-3.4.11
 ARG APACHE_MIRROT=mirrors.ustc.edu.cn/apache
 # ARG APACHE_MIRROT=mirror.tuna.tsinghua.edu.cn/apache
@@ -35,18 +35,23 @@ RUN set -euxo pipefail \
 	    /opt \
 	&& cd /opt \
 	&& apk add --update --no-cache --virtual .build-deps \
-        wget \
+        curl \
         gnupg \
     \
     && export GNUPGHOME="$(mktemp -d)" \
-    &&  ( \
-            gpg --keyserver pgp.mit.edu --recv-keys "$ZOOKEEPER_KEY" || \
-            gpg --keyserver keyserver.pgp.com --recv-keys "$ZOOKEEPER_KEY" || \
-            gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$ZOOKEEPER_KEY" \
-        ) \
+    &&  for key in \
+            C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D \
+        ; do \
+            gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
+            gpg --keyserver-options timeout=10 --keyserver keyserver.pgp.com --recv-keys "$key" || \
+            gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
+            gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
+            false; \
+        done \
     \
-    && wget -q "http://www.apache.org/dist/zookeeper/${DISTRO_NAME}/${DISTRO_NAME}.tar.gz.asc" \
-    && wget -q "http://${APACHE_MIRROT}/zookeeper/${DISTRO_NAME}/${DISTRO_NAME}.tar.gz" \
+    && curl -fSLO "http://www.apache.org/dist/zookeeper/${DISTRO_NAME}/${DISTRO_NAME}.tar.gz.asc" \
+    && curl -fSLO "http://${APACHE_MIRROT}/zookeeper/${DISTRO_NAME}/${DISTRO_NAME}.tar.gz" \
     \
     && gpg --batch --verify "$DISTRO_NAME.tar.gz.asc" "$DISTRO_NAME.tar.gz" \
     \

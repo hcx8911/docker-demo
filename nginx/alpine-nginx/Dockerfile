@@ -4,13 +4,14 @@ FROM alpine_base
 
 LABEL MAINTAINER="WaterBolik@163.com"
 
-# apk 安装 nginx-1.12.2-r1
+# apk ?? nginx-1.12.2-r1
 # RUN set -euxo pipefail \
 #     && apk add --update --no-cache \
 # 	    nginx \
 #     && rm -rf /var/cache/apk/*
 
 # https://github.com/nginxinc/docker-nginx/blob/master/mainline/alpine/Dockerfile
+ARG NGINX_VERSION=1.13.7
 RUN set -euxo pipefail \
     && apk add --update --no-cache --virtual .build-deps \
         gcc \
@@ -35,11 +36,11 @@ RUN set -euxo pipefail \
             gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
             gpg --keyserver-options timeout=10 --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" \
             gpg --keyserver-options timeout=10 --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
-            false; \
+            break; \
         done \
     \
-    && curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc -o nginx.tar.gz.asc \
-    && curl -fSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
+    && curl -fSL -o nginx.tar.gz.asc http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc \
+    && curl -fSL -o nginx.tar.gz http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
     \
     && gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
     \
@@ -156,7 +157,6 @@ STOPSIGNAL SIGTERM
 
 CMD ["nginx", "-g", "daemon off;"]
 
-# 编译及执行方法如下:
 # docker build -t alpine-nginx ~/OpenSource/WaterBolik/docker-demo/nginx/alpine-nginx/
 # docker build -t alpine-nginx B:\OpenSource\WaterBolik\docker-demo\nginx\alpine-nginx\
 # docker run -it --rm -p 80:80 -v ./www:/usr/share/nginx/html:ro -d alpine-nginx

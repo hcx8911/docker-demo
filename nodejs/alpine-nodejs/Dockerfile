@@ -7,9 +7,9 @@ FROM alpine_base
 LABEL MAINTAINER="WaterBolik@163.com"
 
 # https://github.com/nodejs/docker-node/blob/master/9/alpine/Dockerfile
+# gpg keys listed at https://github.com/nodejs/node#release-team
 ARG NODE_VERSION=9.2.0
 ARG YARN_VERSION=1.3.2
-# gpg keys listed at https://github.com/nodejs/node#release-team
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
         libstdc++ \
@@ -23,7 +23,6 @@ RUN set -euxo pipefail \
         linux-headers \
         make \
         python \
-        tar \
     \
     && export GNUPGHOME="$(mktemp -d)" \
     &&  for key in \
@@ -42,28 +41,27 @@ RUN set -euxo pipefail \
             gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
             gpg --keyserver-options timeout=10 --keyserver keyserver.pgp.com --recv-keys "$key" || \
             gpg --keyserver-options timeout=10 --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys "$key" \
-            false; \
+            break; \
         done \
     \
-    && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt" \
-    && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.sig" \
+    && curl -SLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
     && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz" \
     \
-    && gpg --verify SHASUMS256.txt.sig SHASUMS256.txt \
-    && grep "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt | sha256sum -c - \
+    && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
+    && grep " node-v$NODE_VERSION.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
     \
     && tar -xf "node-v$NODE_VERSION.tar.xz" \
-    \
-    && rm -f "node-v$NODE_VERSION.tar.xz" \
-    && rm -f SHASUMS256.txt.asc \
-    && rm -f SHASUMS256.txt \
     \
     && cd "node-v$NODE_VERSION" \
     && ./configure \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
     && cd .. \
+    \
     && rm -rf "node-v$NODE_VERSION" \
+    && rm -f "node-v$NODE_VERSION.tar.xz" \
+    && rm -f SHASUMS256.txt.asc \
+    && rm -f SHASUMS256.txt \
     \
     && curl -fSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
     && curl -fSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
