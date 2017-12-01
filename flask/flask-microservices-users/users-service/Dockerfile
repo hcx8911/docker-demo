@@ -11,14 +11,17 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
+# ARG PIP_MIRROR=pypi.tuna.tsinghua.edu.cn
+# ARG PIP_MIRROR=mirrors.aliyun.com/pypi
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
-    postgresql-dev \
+        postgresql-dev \
     && apk add --virtual .fetch-deps \
-    build-base \
-    python3-dev \
-    && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple \
-    --no-cache-dir --upgrade -r requirements.txt \
+        build-base \
+        python3-dev \
+    && pip install --no-cache-dir --upgrade \
+        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+        -r requirements.txt \
     && apk del .fetch-deps \
     && rm -rf /var/cache/apk/*
 

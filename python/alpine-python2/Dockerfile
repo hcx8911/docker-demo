@@ -112,15 +112,15 @@ RUN set -euxo pipefail \
 
 # 配置pip镜像
 # ARG PIP_MIRROR=pypi.tuna.tsinghua.edu.cn
-ARG PIP_MIRROR=mirrors.aliyun.com/pypi
-RUN set -euxo pipefail \
-    && mkdir -p ${HOME}/.pip \
-    &&  { \
-            echo "[global]"; \
-            echo "index-url = https://${PIP_MIRROR}/simple"; \
-        } \
-        > ${HOME}/.pip/pip.conf \
-    && pip install --no-cache-dir --upgrade --force-reinstall pip
+# ARG PIP_MIRROR=mirrors.aliyun.com/pypi
+# RUN set -euxo pipefail \
+#     && mkdir -p ${HOME}/.pip \
+#     &&  { \
+#             echo "[global]"; \
+#             echo "index-url = https://${PIP_MIRROR}/simple"; \
+#         } \
+#         > ${HOME}/.pip/pip.conf \
+#     && pip install --no-cache-dir --upgrade --force-reinstall pip
 
 CMD ["python"]
 

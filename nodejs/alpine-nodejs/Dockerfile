@@ -85,15 +85,15 @@ RUN set -euxo pipefail \
     && rm -rf /var/cache/apk/*
 
 # npm、yarn 镜像配置
-ARG NPM_MIRROR=npm.taobao.org
-RUN set -euxo pipefail \
-    &&  { \
-            echo "registry=https://registry.${NPM_MIRROR}/"; \
-            echo "sass_binary_site=https://${NPM_MIRROR}/mirrors/node-sass/"; \
-            echo "phantomjs_cdnurl=http://${NPM_MIRROR}/mirrors/phantomjs/"; \
-            echo "ELECTRON_MIRROR=http://${NPM_MIRROR}/mirrors/electron/"; \
-        } > ${HOME}/.npmrc \
-    && yarn config set registry https://registry.${NPM_MIRROR}/
+# ARG NPM_MIRROR=npm.taobao.org
+# RUN set -euxo pipefail \
+#     &&  { \
+#             echo "registry=https://registry.${NPM_MIRROR}/"; \
+#             echo "sass_binary_site=https://${NPM_MIRROR}/mirrors/node-sass/"; \
+#             echo "phantomjs_cdnurl=http://${NPM_MIRROR}/mirrors/phantomjs/"; \
+#             echo "ELECTRON_MIRROR=http://${NPM_MIRROR}/mirrors/electron/"; \
+#         } > ${HOME}/.npmrc \
+#     && yarn config set registry https://registry.${NPM_MIRROR}/
 
 # 使用淘宝的npm镜像
 # RUN npm install --production -d --registry=https://registry.npm.taobao.org

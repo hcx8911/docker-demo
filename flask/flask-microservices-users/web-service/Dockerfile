@@ -7,9 +7,9 @@ VOLUME /usr/src/app
 
 WORKDIR /usr/src/app
 
-RUN set -euxo pipefail \
-    && npm install --global --registry=https://registry.npm.taobao.org \
-        create-react-app
+# RUN set -euxo pipefail \
+#     && npm install --global --registry=https://registry.npm.taobao.org \
+#         create-react-app
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
 # ENV PATH /usr/src/app/node_modules/.bin:$PATH
@@ -33,3 +33,11 @@ CMD ["npm", "start"]
 # docker build -t web-service ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/web-service/
 # docker build -t web-service B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\web-service\
 # docker run -it --rm -p 3000:3000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/web-service/app:/usr/src/app web-service
+
+# --registry=https://registry.npm.taobao.org
+# $ npm install --global create-react-app
+# 创建 react 项目
+# $ create-react-app .
+# 安装 Axios to manage the AJAX call
+# $ npm install axios --save
+# $ yarn add axios
