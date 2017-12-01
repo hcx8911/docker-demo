@@ -39,11 +39,10 @@ docker build -t docker-in-centos ${ROOTPATH}/docker-in-docker/docker-in-centos/
 docker build -t docker-in-debian ${ROOTPATH}/docker-in-docker/docker-in-debian/
 docker build -t docker-in-ubuntu ${ROOTPATH}/docker-in-docker/docker-in-ubuntu/
 
-docker build -t alpine-sshd ${ROOTPATH}/sshd/alpine-sshd/
 docker build -t centos-sshd ${ROOTPATH}/sshd/centos-sshd/
 
+docker build -t alpine-sshd ${ROOTPATH}/sshd/alpine-sshd/
 docker build -t alpine-openjdk ${ROOTPATH}/openjdk/alpine-openjdk/
-
 docker build -t alpine-zookeeper ${ROOTPATH}/zookeeper/alpine-zookeeper/
 
 docker build -t alpine-nginx ${ROOTPATH}/nginx/alpine-nginx/

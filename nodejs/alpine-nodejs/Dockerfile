@@ -10,6 +10,9 @@ LABEL MAINTAINER="WaterBolik@163.com"
 # gpg keys listed at https://github.com/nodejs/node#release-team
 ARG NODE_VERSION=9.2.0
 ARG YARN_VERSION=1.3.2
+# ARG NODE_MIRROR=nodejs.org/dist
+# ARG NODE_MIRROR=mirrors.ustc.edu.cn/node
+ARG NODE_MIRROR=npm.taobao.org/mirrors/node
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
         libstdc++ \
@@ -44,8 +47,8 @@ RUN set -euxo pipefail \
             false; \
         done \
     \
-    && curl -SLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
-    && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz" \
+    && curl -SLO --compressed "https://$NODE_MIRROR/v$NODE_VERSION/SHASUMS256.txt.asc" \
+    && curl -SLO "https://$NODE_MIRROR/v$NODE_VERSION/node-v$NODE_VERSION.tar.xz" \
     \
     && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
     && grep " node-v$NODE_VERSION.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
@@ -80,6 +83,20 @@ RUN set -euxo pipefail \
     && rm -rf "$GNUPGHOME" \
     && apk del .build-deps \
     && rm -rf /var/cache/apk/*
+
+# npm、yarn 镜像配置
+ARG NPM_MIRROR=npm.taobao.org
+RUN set -euxo pipefail \
+    &&  { \
+            echo "registry=https://registry.${NPM_MIRROR}/"; \
+            echo "sass_binary_site=https://${NPM_MIRROR}/mirrors/node-sass/"; \
+            echo "phantomjs_cdnurl=http://${NPM_MIRROR}/mirrors/phantomjs/"; \
+            echo "ELECTRON_MIRROR=http://${NPM_MIRROR}/mirrors/electron/"; \
+        } > ${HOME}/.npmrc \
+    && yarn config set registry https://registry.${NPM_MIRROR}/
+
+# 使用淘宝的npm镜像
+# RUN npm install --production -d --registry=https://registry.npm.taobao.org
 
 CMD [ "node" ]
 

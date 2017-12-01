@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN set -euxo pipefail \   
+RUN set -euxo pipefail \
     && apk add --update --no-cache \
     postgresql-dev \
     && apk add --virtual .fetch-deps \
@@ -20,7 +20,7 @@ RUN set -euxo pipefail \
     && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple \
     --no-cache-dir --upgrade -r requirements.txt \
     && apk del .fetch-deps \
-    && rm -rf /var/cache/apk/* 
+    && rm -rf /var/cache/apk/*
 
 EXPOSE 5000
 
@@ -53,8 +53,7 @@ CMD python manage.py runserver -h 0.0.0.0
 # CMD ["./entrypoint.sh"]
 
 
-# 编译及执行方法如下: 
-# docker build -t users-service /Volumes/Work/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-service/
+# 编译及执行方法如下:
 # docker build -t users-service ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-service/
 # docker build -t users-service B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\users-service\
-# docker run -it --rm  -p 8080:5000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/app:/usr/src/app users-service 
+# docker run -it --rm  -p 8080:5000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/app:/usr/src/app users-service
