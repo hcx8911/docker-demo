@@ -7,9 +7,16 @@ VOLUME /usr/src/app
 
 WORKDIR /usr/src/app
 
-# RUN set -euxo pipefail \
-#     && npm install --global --registry=https://registry.npm.taobao.org \
-#         create-react-app
+ARG REACT_APP_USERS_SERVICE_URL
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
+ENV REACT_APP_USERS_SERVICE_URL $REACT_APP_USERS_SERVICE_URL
+
+RUN set -euxo pipefail \
+    && npm install --global --silent --registry=https://registry.npm.taobao.org \
+        create-react-app \
+        react-scripts \
+        pushstate-server
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
 # ENV PATH /usr/src/app/node_modules/.bin:$PATH
@@ -22,12 +29,14 @@ WORKDIR /usr/src/app
 # add app
 # ADD . /usr/src/app
 
-EXPOSE 3000
+# EXPOSE 3000
 
 # start app
 # CMD ["npm", "start"]
-CMD yarn start
+# CMD yarn start
 
+# start app
+CMD ["pushstate-server", "build"]
 # CMD sh
 
 # 编译及执行方法如下:

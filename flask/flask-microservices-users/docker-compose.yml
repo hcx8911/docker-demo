@@ -4,9 +4,9 @@ services:
 
   users-service:
     container_name: users-service
-    # build: users-service
+    build: users-service
     # build: https://github.com/realpython/flask-microservices-users.git
-    image: users-service
+    # image: users-service
     volumes:
       - ./users-service/app:/usr/src/app
     ports:
@@ -24,17 +24,23 @@ services:
 
   web-service:
     container_name: web-service
-    # build: web-service
     image: web-service
     # build: https://github.com/realpython/flask-microservices-client.git
+    build:
+      context: web-service
+      args:
+        - NODE_ENV=development
+        - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
+        # - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
     # image: web-service
     volumes:
       - ./web-service/app:/usr/src/app
     ports:
-      - '3007:3000' # expose ports - HOST:CONTAINER
-    environment:
-      - NODE_ENV=development
-      - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
+      - '9000:9000' # expose ports - HOST:CONTAINER
+    # environment:
+    #   - NODE_ENV=development
+    #   - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+      # - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
     depends_on:
       users-service:
         condition: service_started
@@ -43,9 +49,9 @@ services:
 
   users-db:
     container_name: users-db
-    # build: users-db
+    build: users-db
     # build: https://github.com/realpython/flask-microservices-users.git#master:project/db
-    image: users-db
+    # image: users-db
     ports:
         - '5432:5432'
     environment:
@@ -56,16 +62,19 @@ services:
 
   users-nginx:
     container_name: users-nginx
-    # build: users-nginx
-    image: users-nginx
+    build: users-nginx
+    # image: users-nginx
     # restart: always
     ports:
       - '80:80'
     depends_on:
       users-service:
         condition: service_started
+      web-service:
+        condition: service_started
     links:
       - users-service
+      - web-service
 
   # 数据库管理Web服务
   adminer:

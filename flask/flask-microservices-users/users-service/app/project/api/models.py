@@ -14,7 +14,13 @@ class User(db.Model):
     active = db.Column(db.Boolean(), default=False, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, username, email):
+    def add_user(username, email, created_at=datetime.datetime.utcnow()):
+        user = User(username=username, email=email, created_at=created_at)
+        db.session.add(user)
+        db.session.commit()
+        return user
+
+    def __init__(self, username, email, created_at=datetime.datetime.utcnow()):
         self.username = username
         self.email = email
-        self.created_at = datetime.datetime.utcnow()
+        self.created_at = created_at
