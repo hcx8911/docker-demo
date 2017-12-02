@@ -9,10 +9,10 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk/jre \
     CLASSPATH=/usr/lib/jvm/java-1.8-openjdk/jre/lib \
 	PATH=$PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-ARG JAVA_ALPINE_VERSION=8.131.11-r2
+ARG JAVA_ALPINE_VERSION=8.151.12-r0
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
-		openjdk8-jre>="$JAVA_ALPINE_VERSION" \
+		openjdk8-jre \
 	\
 	&& 	{ \
 			echo '#!/bin/sh'; \
@@ -23,6 +23,7 @@ RUN set -euxo pipefail \
 		> /usr/local/bin/docker-java-home \
 	&& chmod +x /usr/local/bin/docker-java-home \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ] \
+	&& rm -f /usr/local/bin/docker-java-home \
 	\
 	&& rm -rf /var/cache/apk/*
 

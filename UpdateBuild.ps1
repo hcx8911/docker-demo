@@ -22,10 +22,12 @@ docker pull ubuntu:16.04
 docker pull docker
 docker pull docker:dind
 
-# # docker pull mysql
-# docker pull mysql/mysql-server
+docker pull mysql
+docker pull mysql/mysql-server
 docker pull postgres:alpine
 docker pull adminer
+
+docker pull jenkins/jenkins:lts-alpine
 
 # os base images
 docker build -t alpine_base ${ROOTPATH}/os_base/alpine_base/

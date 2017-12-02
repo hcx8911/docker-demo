@@ -10,7 +10,7 @@ services:
     volumes:
       - ./users-service/app:/usr/src/app
     ports:
-      - '5000'
+      - '5000:5000'
     environment:
       - APP_SETTINGS=project.config.DevelopmentConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
@@ -24,7 +24,7 @@ services:
 
   web-service:
     container_name: web-service
-    build: web-service
+    # build: web-service
     image: web-service
     # build: https://github.com/realpython/flask-microservices-client.git
     # image: web-service
