@@ -1,4 +1,5 @@
-FROM alpine-nginx
+# FROM alpine-nginx
+FROM nginx:alpine
 
 LABEL MAINTAINER="WaterBolik@163.com"
 

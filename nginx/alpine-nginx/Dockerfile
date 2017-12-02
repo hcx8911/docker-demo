@@ -41,7 +41,6 @@ RUN set -euxo pipefail \
     \
     && curl -fSL -o nginx.tar.gz.asc http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc \
     && curl -fSL -o nginx.tar.gz http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
-    \
     && gpg --batch --verify nginx.tar.gz.asc nginx.tar.gz \
     \
     && mkdir -p /usr/src \
@@ -110,8 +109,9 @@ RUN set -euxo pipefail \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
     && rm -rf /etc/nginx/html/ \
-    && mkdir /etc/nginx/conf.d/ \
-    && mkdir -p /usr/share/nginx/html/ \
+    && mkdir -p \
+        /etc/nginx/conf.d/ \
+        /usr/share/nginx/html/ \
     && install -m644 html/index.html /usr/share/nginx/html/ \
     && install -m644 html/50x.html /usr/share/nginx/html/ \
     && install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
@@ -139,13 +139,13 @@ RUN set -euxo pipefail \
         )" \
     && apk add --no-cache --virtual .nginx-rundeps \
         $runDeps \
+    && apk del .build-deps \
     && apk del .gettext \
     && mv /tmp/envsubst /usr/local/bin/ \
     \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log \
     \
-    && apk del .build-deps \
     && rm -rf /var/cache/apk/*
 
 COPY nginx.conf /etc/nginx/nginx.conf

@@ -47,7 +47,7 @@ services:
     # build: https://github.com/realpython/flask-microservices-users.git#master:project/db
     image: users-db
     ports:
-        - '5432'
+        - '5432:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -58,7 +58,7 @@ services:
     container_name: users-nginx
     # build: users-nginx
     image: users-nginx
-    restart: always
+    # restart: always
     ports:
       - '80:80'
     depends_on:
