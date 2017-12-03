@@ -5,13 +5,14 @@ import json
 from project import db
 from project.api.models import User
 from project.tests.base import BaseTestCase
+from project.tests.utils import add_user
 
+# def add_user(username, email, created_at=datetime.datetime.utcnow()):
+#     user = User(username=username, email=email, created_at=created_at)
+#     db.session.add(user)
+#     db.session.commit()
+#     return user
 
-def add_user(username, email, created_at=datetime.datetime.utcnow()):
-    user = User(username=username, email=email, created_at=created_at)
-    db.session.add(user)
-    db.session.commit()
-    return user
 
 class TestUserService(BaseTestCase):
     """Tests for the Users Service."""
