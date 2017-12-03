@@ -52,6 +52,8 @@ services:
     build: users-db
     # build: https://github.com/realpython/flask-microservices-users.git#master:project/db
     # image: users-db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     ports:
         - '5432:5432'
     environment:
@@ -84,6 +86,9 @@ services:
         - '8080:8080'
     links:
         - users-db:postgres
+
+volumes:
+  postgres-data: {}
 
 # 编译镜像
 # $ docker-compose build

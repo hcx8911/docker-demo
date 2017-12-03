@@ -1,17 +1,3 @@
-# project/tests/test_config.py
-
-
-import unittest
-import os
-
-from flask import current_app
-from flask_testing import TestCase
-
-from project import create_app
-
-app = create_app()
-
-
 class TestDevelopmentConfig(TestCase):
     def create_app(self):
         app.config.from_object('project.config.DevelopmentConfig')
@@ -24,8 +10,8 @@ class TestDevelopmentConfig(TestCase):
         self.assertTrue(
             app.config['SQLALCHEMY_DATABASE_URI'] ==
             os.environ.get('DATABASE_URL')
-            # 'postgres://postgres:postgres@users-db:5432/users_dev'
         )
+        self.assertTrue(app.config['BCRYPT_LOG_ROUNDS'] == 4)
 
 
 class TestTestingConfig(TestCase):
@@ -41,8 +27,8 @@ class TestTestingConfig(TestCase):
         self.assertTrue(
             app.config['SQLALCHEMY_DATABASE_URI'] ==
             os.environ.get('DATABASE_TEST_URL')
-            # 'postgres://postgres:postgres@users-db:5432/users_test'
         )
+        self.assertTrue(app.config['BCRYPT_LOG_ROUNDS'] == 4)
 
 
 class TestProductionConfig(TestCase):
@@ -54,7 +40,4 @@ class TestProductionConfig(TestCase):
         self.assertTrue(app.config['SECRET_KEY'] == 'my_precious')
         self.assertFalse(app.config['DEBUG'])
         self.assertFalse(app.config['TESTING'])
-
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertTrue(app.config['BCRYPT_LOG_ROUNDS'] == 13)

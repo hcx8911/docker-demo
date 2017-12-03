@@ -19,6 +19,7 @@ RUN set -euxo pipefail \
     && apk add --virtual .fetch-deps \
         build-base \
         python3-dev \
+        libffi-dev \
     && pip install --no-cache-dir --upgrade \
         -i https://pypi.tuna.tsinghua.edu.cn/simple \
         -r requirements.txt \
