@@ -4,7 +4,8 @@ services:
 
   users-service:
     container_name: users-service
-    build: users-service
+    build:
+      context: users-service
     # build: https://github.com/realpython/flask-microservices-users.git
     # image: users-service
     volumes:
@@ -24,7 +25,7 @@ services:
 
   web-service:
     container_name: web-service
-    image: web-service
+    # image: web-service
     # build: https://github.com/realpython/flask-microservices-client.git
     build:
       context: web-service
@@ -37,10 +38,6 @@ services:
       - ./web-service/app:/usr/src/app
     ports:
       - '9000:9000' # expose ports - HOST:CONTAINER
-    # environment:
-    #   - NODE_ENV=development
-    #   - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
-      # - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
     depends_on:
       users-service:
         condition: service_started
@@ -49,8 +46,9 @@ services:
 
   users-db:
     container_name: users-db
-    build: users-db
-    # build: https://github.com/realpython/flask-microservices-users.git#master:project/db
+    build:
+      context: users-db
+    # context: https://github.com/realpython/flask-microservices-users.git#master:project/db
     # image: users-db
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -64,7 +62,8 @@ services:
 
   users-nginx:
     container_name: users-nginx
-    build: users-nginx
+    build:
+      context: users-nginx
     # image: users-nginx
     # restart: always
     ports:

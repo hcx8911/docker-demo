@@ -24,6 +24,7 @@ docker pull docker:dind
 
 docker pull mysql
 docker pull mysql/mysql-server
+docker pull mysql/mysql-cluster
 docker pull postgres:alpine
 docker pull adminer
 

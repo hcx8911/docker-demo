@@ -1,5 +1,0 @@
-var-lib-docker
-__pycache__
-htmlcov
-jenkins_home
-flask/flask-microservices-users/users-service/app/migrations
