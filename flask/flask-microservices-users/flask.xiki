@@ -2,43 +2,41 @@ $ cd ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users
 
 ## 编译镜像
 $ docker-compose build
-
 ## 查看本地镜像
 $ docker images
-
 ## 创建和运行容器组
 $ docker-compose up -d
-
 ## 查看容器状态
 $ docker ps -a
 
+# users-service 管理
 ## 创建数据库
 $ docker-compose exec users-service python manage.py recreate_db
-
 ## 创建测试数据
 $ docker-compose exec users-service python manage.py seed_db
-
 ## 测试
 $ docker-compose exec users-service python manage.py test
-
 ## 覆盖测试
 $ docker-compose exec users-service python manage.py cov
-
 ## 数据库维护初始化
 $ docker-compose exec users-service python manage.py db init
-
 ## 数据库维护准备
 $ docker-compose exec users-service python manage.py db migrate
-
 ## 数据库更新
 $ docker-compose exec users-service python manage.py db upgrade
 
+# web-service 项目管理
+## 创建 react 项目
+$ docker-compose exec web-service create-react-app .
+## 安装 Axios to manage the AJAX call
+$ docker-compose exec web-service yarn add axios
+## 安装react-router-dom
+$ docker-compose exec web-service yarn add react-router-dom
+
 ## 停止容器组
 $ docker-compose stop
-
 ## 终止容器组运行并删除容器
 $ docker-compose down
-
 ## 强制重新编译镜像
 $ docker-compose build --no-cache
 
@@ -47,5 +45,3 @@ $ docker exec -ti users-db psql -U postgres -W
 #   \c users_dev
 #   \dt
 #   \q
-
-
