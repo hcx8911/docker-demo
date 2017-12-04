@@ -26,20 +26,13 @@ class TestUserService(BaseTestCase):
         self.assertIn('success', data['status'])
 
     def test_add_user(self):
-        """Ensure a new user can be added to the database."""
-        with self.client:
-            response = self.client.post(
-                '/users',
-                data=json.dumps(dict(
-                    username='michael',
-                    email='michael@realpython.com'
-                )),
-                content_type='application/json',
-            )
-            data = json.loads(response.data.decode())
-            self.assertEqual(response.status_code, 201)
-            self.assertIn('michael@realpython.com was added!', data['message'])
-            self.assertIn('success', data['status'])
+        user = add_user('justatest', 'test@test.com', 'test')
+        self.assertTrue(user.id)
+        self.assertEqual(user.username, 'justatest')
+        self.assertEqual(user.email, 'test@test.com')
+        self.assertTrue(user.password)
+        self.assertTrue(user.active)
+        self.assertTrue(user.created_at)
 
     def test_add_user_invalid_json(self):
         """Ensure error is thrown if the JSON object is empty."""
@@ -74,7 +67,8 @@ class TestUserService(BaseTestCase):
                 '/users',
                 data=json.dumps(dict(
                     username='michael',
-                    email='michael@realpython.com'
+                    email='michael@realpython.com',
+                    password='test'
                 )),
                 content_type='application/json',
             )
@@ -82,7 +76,8 @@ class TestUserService(BaseTestCase):
                 '/users',
                 data=json.dumps(dict(
                     username='michael',
-                    email='michael@realpython.com'
+                    email='michael@realpython.com',
+                    password='test'
                 )),
                 content_type='application/json',
             )
@@ -94,7 +89,7 @@ class TestUserService(BaseTestCase):
 
     def test_single_user(self):
         """Ensure get single user behaves correctly."""
-        user = add_user('michael', 'michael@realpython.com')
+        user = add_user('michael', 'michael@realpython.com', 'test')
         with self.client:
             response = self.client.get(f'/users/{user.id}')
             data = json.loads(response.data.decode())
@@ -135,13 +130,12 @@ class TestUserService(BaseTestCase):
             self.assertTrue('created_at' in data['data']['users'][0])
             self.assertTrue('created_at' in data['data']['users'][1])
             self.assertIn('michael', data['data']['users'][1]['username'])
-            self.assertIn(
-                'michael@realpython.com', data['data']['users'][1]['email'])
+            self.assertIn('michael@realpython.com',
+                          data['data']['users'][1]['email'])
             self.assertIn('fletcher', data['data']['users'][0]['username'])
-            self.assertIn(
-                'fletcher@realpython.com', data['data']['users'][0]['email'])
+            self.assertIn('fletcher@realpython.com',
+                          data['data']['users'][0]['email'])
             self.assertIn('success', data['status'])
-
 
     # def test_main_no_users(self):
     #     """Ensure the main route behaves correctly when no users have been added to the database."""
