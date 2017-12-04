@@ -28,10 +28,8 @@ $ docker-compose exec users-service python manage.py db upgrade
 # web-service 项目管理
 ## 创建 react 项目
 $ docker-compose exec web-service create-react-app .
-## 安装 Axios to manage the AJAX call
-$ docker-compose exec web-service yarn add axios
-## 安装react-router-dom
-$ docker-compose exec web-service yarn add react-router-dom
+## 安装 react 插件
+$ docker-compose exec web-service yarn add axios react-router-dom react-bootstrap react-router-bootstrap
 
 ## 停止容器组
 $ docker-compose stop
