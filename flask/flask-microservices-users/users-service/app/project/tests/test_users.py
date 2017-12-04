@@ -125,8 +125,8 @@ class TestUserService(BaseTestCase):
     def test_all_users(self):
         """Ensure get all users behaves correctly."""
         created = datetime.datetime.utcnow() + datetime.timedelta(-30)
-        add_user('michael', 'michael@realpython.com', created)
-        add_user('fletcher', 'fletcher@realpython.com')
+        add_user('michael', 'michael@realpython.com', 'test', created)
+        add_user('fletcher', 'fletcher@realpython.com', 'test')
         with self.client:
             response = self.client.get('/users')
             data = json.loads(response.data.decode())
@@ -141,6 +141,7 @@ class TestUserService(BaseTestCase):
             self.assertIn(
                 'fletcher@realpython.com', data['data']['users'][0]['email'])
             self.assertIn('success', data['status'])
+
 
     # def test_main_no_users(self):
     #     """Ensure the main route behaves correctly when no users have been added to the database."""

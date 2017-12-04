@@ -94,13 +94,13 @@ volumes:
 # 创建和运行容器组
 # $ docker-compose up -d
 # 创建数据库
-# $ docker-compose run users-service python manage.py recreate_db
+# $ docker-compose exec users-service python manage.py recreate_db
 # 创建测试数据
-# $ docker-compose run users-service python manage.py seed_db
+# $ docker-compose exec users-service python manage.py seed_db
 # 测试
-# $ docker-compose run users-service python manage.py test
+# $ docker-compose exec users-service python manage.py test
 # 覆盖测试
-# $ docker-compose run users-service python manage.py cov
+# $ docker-compose exec users-service python manage.py cov
 # 停止容器组
 # $ docker-compose stop
 # 终止容器组运行并删除容器
