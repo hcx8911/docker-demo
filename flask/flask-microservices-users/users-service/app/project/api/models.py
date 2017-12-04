@@ -3,6 +3,7 @@
 
 import datetime
 
+import jwt
 from flask import current_app
 from project import bcrypt, db
 
@@ -26,3 +27,22 @@ class User(db.Model):
             password, current_app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode()
         self.created_at = created_at
+
+    def encode_auth_token(self, user_id):
+        """Generates the auth token"""
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(
+                    days=current_app.config.get('TOKEN_EXPIRATION_DAYS'),
+                    seconds=current_app.config.get('TOKEN_EXPIRATION_SECONDS')
+                ),
+                'iat': datetime.datetime.utcnow(),
+                'sub': user_id
+            }
+            return jwt.encode(
+                payload,
+                current_app.config.get('SECRET_KEY'),
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e
