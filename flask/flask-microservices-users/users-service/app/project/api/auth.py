@@ -10,6 +10,7 @@ from project import db, bcrypt
 
 auth_blueprint = Blueprint('auth', __name__)
 
+
 @auth_blueprint.route('/auth/register', methods=['POST'])
 def register_user():
     # get post data
@@ -26,7 +27,7 @@ def register_user():
     try:
         # check for existing user
         user = User.query.filter(
-            or_(User.username == username, User.email==email)).first()
+            or_(User.username == username, User.email == email)).first()
         if not user:
             # add new user to db
             new_user = User(
@@ -58,6 +59,7 @@ def register_user():
             'message': 'Invalid payload.'
         }
         return jsonify(response_object), 400
+
 
 @auth_blueprint.route('/auth/login', methods=['POST'])
 def login_user():
@@ -97,6 +99,7 @@ def login_user():
         }
         return jsonify(response_object), 500
 
+
 @auth_blueprint.route('/auth/logout', methods=['GET'])
 def logout_user():
     # get auth token
@@ -105,11 +108,19 @@ def logout_user():
         auth_token = auth_header.split(" ")[1]
         resp = User.decode_auth_token(auth_token)
         if not isinstance(resp, str):
-            response_object = {
-                'status': 'success',
-                'message': 'Successfully logged out.'
-            }
-            return jsonify(response_object), 200
+            user = User.query.filter_by(id=resp).first()
+            if not user or not user.active:
+                response_object = {
+                    'status': 'error',
+                    'message': 'Something went wrong. Please contact us.'
+                }
+                return jsonify(response_object), 401
+            else:
+                response_object = {
+                    'status': 'success',
+                    'message': 'Successfully logged out.'
+                }
+                return jsonify(response_object), 200
         else:
             response_object = {
                 'status': 'error',
@@ -122,6 +133,7 @@ def logout_user():
             'message': 'Provide a valid auth token.'
         }
         return jsonify(response_object), 403
+
 
 @auth_blueprint.route('/auth/status', methods=['GET'])
 def get_user_status():
