@@ -7,12 +7,6 @@ from project.api.models import User
 from project.tests.base import BaseTestCase
 from project.tests.utils import add_user
 
-# def add_user(username, email, created_at=datetime.datetime.utcnow()):
-#     user = User(username=username, email=email, created_at=created_at)
-#     db.session.add(user)
-#     db.session.commit()
-#     return user
-
 
 class TestUserService(BaseTestCase):
     """Tests for the Users Service."""
@@ -137,37 +131,6 @@ class TestUserService(BaseTestCase):
                           data['data']['users'][0]['email'])
             self.assertIn('success', data['status'])
 
-    # def test_main_no_users(self):
-    #     """Ensure the main route behaves correctly when no users have been added to the database."""
-    #     response = self.client.get('/')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn(b'<h1>All Users</h1>', response.data)
-    #     self.assertIn(b'<p>No users!</p>', response.data)
-
-    # def test_main_with_users(self):
-    #     """Ensure the main route behaves correctly when users have been added to the database."""
-    #     add_user('michael', 'michael@realpython.com')
-    #     add_user('fletcher', 'fletcher@realpython.com')
-    #     response = self.client.get('/')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn(b'<h1>All Users</h1>', response.data)
-    #     self.assertNotIn(b'<p>No users!</p>', response.data)
-    #     self.assertIn(b'<strong>michael</strong>', response.data)
-    #     self.assertIn(b'<strong>fletcher</strong>', response.data)
-
-    # def test_main_add_user(self):
-    #     """Ensure a new user can be added to the database."""
-    #     with self.client:
-    #         response = self.client.post(
-    #             '/',
-    #             data=dict(username='michael', email='michael@realpython.com'),
-    #             follow_redirects=True
-    #         )
-    #         self.assertEqual(response.status_code, 200)
-    #         self.assertIn(b'<h1>All Users</h1>', response.data)
-    #         self.assertNotIn(b'<p>No users!</p>', response.data)
-    #         self.assertIn(b'<strong>michael</strong>', response.data)
-
     def test_add_user_invalid_json_keys_no_password(self):
         """Ensure error is thrown if the JSON object does not have a password key."""
         with self.client:
@@ -182,3 +145,38 @@ class TestUserService(BaseTestCase):
             self.assertEqual(response.status_code, 400)
             self.assertIn('Invalid payload.', data['message'])
             self.assertIn('fail', data['status'])
+
+    def test_add_user_inactive(self):
+        add_user('test', 'test@test.com', 'test')
+        # update user
+        user = User.query.filter_by(email='test@test.com').first()
+        user.active = False
+        db.session.commit()
+        with self.client:
+            resp_login = self.client.post(
+                '/auth/login',
+                data=json.dumps(dict(
+                    email='test@test.com',
+                    password='test'
+                )),
+                content_type='application/json'
+            )
+            response = self.client.post(
+                '/users',
+                data=json.dumps(dict(
+                    username='michael',
+                    email='michael@realpython.com',
+                    password='test'
+                )),
+                content_type='application/json',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_login.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'error')
+            self.assertTrue(
+                data['message'] == 'Something went wrong. Please contact us.')
+            self.assertEqual(response.status_code, 401)

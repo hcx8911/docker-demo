@@ -2,6 +2,7 @@
 from flask import Blueprint, jsonify, render_template, request
 from project import db
 from project.api.models import User
+from project.api.utils import authenticate
 from sqlalchemy import exc
 
 users_blueprint = Blueprint('users', __name__, template_folder='./templates')
@@ -13,41 +14,8 @@ def ping_pong():
         'message': 'pong!'
     })
 
-
-# @users_blueprint.route('/', methods=['GET'])
-# def index():
-#     return render_template('index.html')
-
-# @users_blueprint.route('/', methods=['GET'])
-# def index():
-#     users = User.query.all()
-#     return render_template('index.html', users=users)
-
-# @users_blueprint.route('/', methods=['GET', 'POST'])
-# def index():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         email = request.form['email']
-#         db.session.add(User(username=username, email=email))
-#         db.session.commit()
-#     users = User.query.order_by(User.created_at.desc()).all()
-#     return render_template('index.html', users=users)
-
-# @users_blueprint.route('/users', methods=['POST'])
-# def add_user():
-#     post_data = request.get_json()
-#     username = post_data.get('username')
-#     email = post_data.get('email')
-#     db.session.add(User(username=username, email=email))
-#     db.session.commit()
-#     response_object = {
-#         'status': 'success',
-#         'message': f'{email} was added!'
-#     }
-#     return jsonify(response_object), 201
-
-
 @users_blueprint.route('/users', methods=['POST'])
+@authenticate
 def add_user():
     post_data = request.get_json()
     if not post_data:
