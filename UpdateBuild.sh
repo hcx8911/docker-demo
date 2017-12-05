@@ -58,10 +58,10 @@ docker build -t alpine-python3 ${ROOTPATH}/python/alpine-python3/
 
 docker build -t alpine-nodejs ${ROOTPATH}/nodejs/alpine-nodejs/
 
-docker build -t users-service ${ROOTPATH}/flask/flask-microservices-users/users-service
-docker build -t web-service ${ROOTPATH}/flask/flask-microservices-users/web-service
-docker build -t users-db ${ROOTPATH}/flask/flask-microservices-users/users-db
-docker build -t users-nginx ${ROOTPATH}/flask/flask-microservices-users/users-nginx/
+# docker build -t users-service ${ROOTPATH}/flask/flask-microservices-users/users-service
+# docker build -t web-service ${ROOTPATH}/flask/flask-microservices-users/web-service
+# docker build -t users-db ${ROOTPATH}/flask/flask-microservices-users/users-db
+# docker build -t users-nginx ${ROOTPATH}/flask/flask-microservices-users/users-nginx/
 
 # 查看Docker的磁盘使用情况
 docker system df
