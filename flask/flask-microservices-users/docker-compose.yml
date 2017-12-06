@@ -1,5 +1,9 @@
 version: '2.1'
 
+networks:
+  bridge:
+    driver: bridge
+
 services:
 
   users-service:
@@ -10,6 +14,8 @@ services:
     # image: users-service
     volumes:
       - ./users-service/app:/usr/src/app
+    networks:
+      - bridge
     ports:
       - '5000:5000'
     environment:
@@ -38,6 +44,8 @@ services:
     # image: web-service
     volumes:
       - ./web-service/app:/usr/src/app
+    networks:
+      - bridge
     ports:
       - '9000:9000' # expose ports - HOST:CONTAINER
     depends_on:
@@ -54,6 +62,8 @@ services:
     # image: users-db
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - bridge
     ports:
         - '5432:5432'
     environment:
@@ -68,6 +78,8 @@ services:
       context: users-nginx
     # image: users-nginx
     # restart: always
+    networks:
+      - bridge
     ports:
       - '80:80'
     depends_on:
@@ -83,6 +95,8 @@ services:
   adminer:
     container_name: adminer
     image: adminer
+    networks:
+      - bridge
     ports:
         - '8080:8080'
     links:

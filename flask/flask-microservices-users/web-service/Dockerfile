@@ -13,7 +13,7 @@ ENV NODE_ENV $NODE_ENV
 ENV REACT_APP_USERS_SERVICE_URL $REACT_APP_USERS_SERVICE_URL
 
 RUN set -euxo pipefail \
-    && npm install --global --silent --registry=https://registry.npm.taobao.org \
+    && npm install --global --registry=https://registry.npm.taobao.org \
         create-react-app \
         react-scripts \
         pushstate-server
