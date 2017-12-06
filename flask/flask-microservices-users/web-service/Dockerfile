@@ -11,13 +11,15 @@ ARG REACT_APP_USERS_SERVICE_URL
 ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
 ENV REACT_APP_USERS_SERVICE_URL=$REACT_APP_USERS_SERVICE_URL
+ARG REACT_APP_EVAL_SERVICE_URL
+ENV REACT_APP_EVAL_SERVICE_URL=$REACT_APP_EVAL_SERVICE_URL
 
 RUN set -euxo pipefail \
-    && npm install --global --registry=https://registry.npm.taobao.org \
-        create-react-app \
-        react-scripts \
+    && npm install --global \
+        --registry=https://registry.npm.taobao.org \
         pushstate-server
-
+        # create-react-app \
+        # react-scripts \
 # add app
 # ADD . /usr/src/app
 
