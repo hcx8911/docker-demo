@@ -34,9 +34,9 @@ CMD ["pushstate-server", "build"]
 # CMD sh
 
 # 编译及执行方法如下:
-# $ docker build -t web-service ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/web-service/
-# $ docker build -t web-service B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\web-service\
-# $ docker run -it --rm -p 3000:3000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/web-service/app:/usr/src/app web-service
+# $ docker build -t users-client ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-client/
+# $ docker build -t users-client B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\users-client\
+# $ docker run -it --rm -p 3000:3000 -v ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-client/app:/usr/src/app users-client
 
 # --registry=https://registry.npm.taobao.org
 # $ npm install --global create-react-app

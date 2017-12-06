@@ -32,19 +32,19 @@ services:
       - users-db
     command: gunicorn -b 0.0.0.0:5000 manage:app
 
-  web-service:
-    container_name: web-service
-    # image: web-service
+  users-client:
+    container_name: users-client
+    # image: users-client
     # build: https://github.com/realpython/flask-microservices-client.git
     build:
-      context: web-service
+      context: users-client
       args:
         - NODE_ENV=development
         - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
         # - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
-    # image: web-service
+    # image: users-client
     volumes:
-      - ./web-service/app:/usr/src/app
+      - ./users-client/app:/usr/src/app
     networks:
       - bridge
     ports:
@@ -86,11 +86,11 @@ services:
     depends_on:
       users-service:
         condition: service_started
-      web-service:
+      users-client:
         condition: service_started
     links:
       - users-service
-      - web-service
+      - users-client
 
   # 数据库管理Web服务
   adminer:

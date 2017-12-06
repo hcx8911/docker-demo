@@ -31,17 +31,17 @@ $ docker-compose exec users-service python
 import binascii, os
 binascii.hexlify(os.urandom(24))
 
-# web-service 项目管理
+# users-client 项目管理
 ## 创建 react 项目
-$ docker-compose exec web-service create-react-app .
+$ docker-compose exec users-client create-react-app .
 ## 安装 react 插件
-$ docker-compose exec web-service yarn add axios
-$ docker-compose exec web-service yarn add react-router-dom
-$ docker-compose exec web-service yarn add react-bootstrap
-$ docker-compose exec web-service yarn add react-router-bootstrap
-$ docker-compose exec web-service yarn add react-ace
+$ docker-compose exec users-client yarn add axios
+$ docker-compose exec users-client yarn add react-router-dom
+$ docker-compose exec users-client yarn add react-bootstrap
+$ docker-compose exec users-client yarn add react-router-bootstrap
+$ docker-compose exec users-client yarn add react-ace
 ## 编译项目
-$ docker-compose exec web-service npm run build
+$ docker-compose exec users-client npm run build
 
 
 ## 停止容器组
