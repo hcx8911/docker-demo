@@ -25,6 +25,12 @@ $ docker-compose exec users-service python manage.py db migrate
 ## 数据库更新
 $ docker-compose exec users-service python manage.py db upgrade
 
+# 创建秘钥
+$ docker-compose exec users-service python
+# 在python中执行如下语句
+import binascii, os 
+binascii.hexlify(os.urandom(24))
+
 # web-service 项目管理
 ## 创建 react 项目
 $ docker-compose exec web-service create-react-app .

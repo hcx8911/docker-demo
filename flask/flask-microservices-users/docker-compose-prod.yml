@@ -20,8 +20,8 @@ services:
       - '5000:5000'
     environment:
       # - APP_SETTINGS=project.config.TestingConfig
-      - APP_SETTINGS=project.config.DevelopmentConfig
-      # - APP_SETTINGS=project.config.ProductionConfig
+      # - APP_SETTINGS=project.config.DevelopmentConfig
+      - APP_SETTINGS=project.config.ProductionConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
       - SECRET_KEY=e090d38ec1ce70d4fa62712718ef9c54f08402eeebba6c02
