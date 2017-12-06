@@ -27,6 +27,78 @@ class TestUserService(BaseTestCase):
         self.assertTrue(user.password)
         self.assertTrue(user.active)
         self.assertTrue(user.created_at)
+        self.assertTrue(user.admin == False)
+
+    def test_add_user_not_admin(self):
+        add_user('test', 'test@test.com', 'test')
+        # update user
+        user = User.query.filter_by(email='test@test.com').first()
+        user.admin = True
+        db.session.commit()
+        with self.client:
+            # user login
+            resp_login = self.client.post(
+                '/auth/login',
+                data=json.dumps(dict(
+                    email='test@test.com',
+                    password='test'
+                )),
+                content_type='application/json'
+            )
+            response = self.client.post(
+                '/users',
+                data=json.dumps(dict(
+                    username='michael',
+                    email='michael@realpython.com',
+                    password='test'
+                )),
+                content_type='application/json',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_login.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'error')
+            self.assertTrue(
+                data['message'] == 'You do not have permission to do that.')
+            self.assertEqual(response.status_code, 401)
+
+    def test_add_user_inactive(self):
+        add_user('test', 'test@test.com', 'test')
+        # update user
+        user = User.query.filter_by(email='test@test.com').first()
+        user.active = False
+        db.session.commit()
+        with self.client:
+            resp_login = self.client.post(
+                '/auth/login',
+                data=json.dumps(dict(
+                    email='test@test.com',
+                    password='test'
+                )),
+                content_type='application/json'
+            )
+            response = self.client.post(
+                '/users',
+                data=json.dumps(dict(
+                    username='michael',
+                    email='michael@realpython.com',
+                    password='test'
+                )),
+                content_type='application/json',
+                headers=dict(
+                    Authorization='Bearer ' + json.loads(
+                        resp_login.data.decode()
+                    )['auth_token']
+                )
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data['status'] == 'error')
+            self.assertTrue(
+                data['message'] == 'Something went wrong. Please contact us.')
+            self.assertEqual(response.status_code, 401)
 
     def test_add_user_invalid_json(self):
         """Ensure error is thrown if the JSON object is empty."""
@@ -64,7 +136,7 @@ class TestUserService(BaseTestCase):
                     email='michael@realpython.com',
                     password='test'
                 )),
-                content_type='application/json',
+                content_type='application/json'
             )
             response = self.client.post(
                 '/users',
@@ -145,38 +217,3 @@ class TestUserService(BaseTestCase):
             self.assertEqual(response.status_code, 400)
             self.assertIn('Invalid payload.', data['message'])
             self.assertIn('fail', data['status'])
-
-    def test_add_user_inactive(self):
-        add_user('test', 'test@test.com', 'test')
-        # update user
-        user = User.query.filter_by(email='test@test.com').first()
-        user.active = False
-        db.session.commit()
-        with self.client:
-            resp_login = self.client.post(
-                '/auth/login',
-                data=json.dumps(dict(
-                    email='test@test.com',
-                    password='test'
-                )),
-                content_type='application/json'
-            )
-            response = self.client.post(
-                '/users',
-                data=json.dumps(dict(
-                    username='michael',
-                    email='michael@realpython.com',
-                    password='test'
-                )),
-                content_type='application/json',
-                headers=dict(
-                    Authorization='Bearer ' + json.loads(
-                        resp_login.data.decode()
-                    )['auth_token']
-                )
-            )
-            data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'error')
-            self.assertTrue(
-                data['message'] == 'Something went wrong. Please contact us.')
-            self.assertEqual(response.status_code, 401)

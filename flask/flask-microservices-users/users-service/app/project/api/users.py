@@ -2,7 +2,7 @@
 from flask import Blueprint, jsonify, render_template, request
 from project import db
 from project.api.models import User
-from project.api.utils import authenticate
+from project.api.utils import authenticate, is_admin
 from sqlalchemy import exc
 
 users_blueprint = Blueprint('users', __name__, template_folder='./templates')
@@ -17,6 +17,12 @@ def ping_pong():
 @users_blueprint.route('/users', methods=['POST'])
 @authenticate
 def add_user():
+    if not is_admin(resp):
+        response_object = {
+            'status': 'error',
+            'message': 'You do not have permission to do that.'
+        }
+        return jsonify(response_object), 401
     post_data = request.get_json()
     if not post_data:
         response_object = {
@@ -60,20 +66,6 @@ def add_user():
             'message': 'Invalid payload.'
         }
         return jsonify(response_object), 400
-
-# @users_blueprint.route('/users/<user_id>', methods=['GET'])
-# def get_single_user(user_id):
-#     """Get single user details"""
-#     user = User.query.filter_by(id=user_id).first()
-#     response_object = {
-#         'status': 'success',
-#         'data': {
-#             'username': user.username,
-#             'email': user.email,
-#             'created_at': user.created_at
-#         }
-#     }
-#     return jsonify(response_object), 200
 
 @users_blueprint.route('/users/<user_id>', methods=['GET'])
 def get_single_user(user_id):
