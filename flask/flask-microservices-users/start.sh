@@ -1,10 +1,16 @@
 ROOTPATH=~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/
 cd $ROOTPATH
 
+export REACT_APP_USERS_SERVICE_URL=http://localhost
+
+docker-compose up -d
+
+
+
 # 安装谷歌浏览器，用于testcafe进行浏览器测试
-brew cask install google-chrome
+# brew cask install google-chrome
 # 安装testcafe
-npm install -g testcafe
+# npm install -g testcafe
 
 export TEST_URL=http://localhost
 

@@ -29,6 +29,11 @@ class App extends Component {
       this.getUserStatus();
     }
   }
+  componentWillMount() {
+    if (window.localStorage.getItem('authToken')) {
+      this.setState({ isAuthenticated: true });
+    }
+  }
   getUsers() {
     axios
       .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)

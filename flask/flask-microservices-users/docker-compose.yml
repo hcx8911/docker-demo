@@ -40,8 +40,8 @@ services:
       context: web-service
       args:
         - NODE_ENV=development
-        - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
-        # - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+        # - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
+        - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
     # image: web-service
     volumes:
       - ./web-service/app:/usr/src/app
