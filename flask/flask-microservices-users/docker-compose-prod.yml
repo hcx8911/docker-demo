@@ -16,8 +16,8 @@ services:
       - ./users-service/app:/usr/src/app
     networks:
       - bridge
-    ports:
-      - '5000:5000'
+    expose:
+      - '5000'
     environment:
       # - APP_SETTINGS=project.config.TestingConfig
       # - APP_SETTINGS=project.config.DevelopmentConfig
@@ -66,7 +66,7 @@ services:
     networks:
       - bridge
     ports:
-        - '5432:5432'
+        - '5435:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

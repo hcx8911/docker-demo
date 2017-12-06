@@ -28,14 +28,20 @@ $ docker-compose exec users-service python manage.py db upgrade
 # 创建秘钥
 $ docker-compose exec users-service python
 # 在python中执行如下语句
-import binascii, os 
+import binascii, os
 binascii.hexlify(os.urandom(24))
 
 # web-service 项目管理
 ## 创建 react 项目
 $ docker-compose exec web-service create-react-app .
 ## 安装 react 插件
-$ docker-compose exec web-service yarn add axios react-router-dom react-bootstrap react-router-bootstrap
+$ docker-compose exec web-service yarn add axios
+$ docker-compose exec web-service yarn add react-router-dom
+$ docker-compose exec web-service yarn add react-bootstrap
+$ docker-compose exec web-service yarn add react-router-bootstrap
+## 编译项目
+$ docker-compose exec web-service npm run build
+
 
 ## 停止容器组
 $ docker-compose stop

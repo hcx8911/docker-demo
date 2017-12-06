@@ -9,8 +9,8 @@ WORKDIR /usr/src/app
 
 ARG REACT_APP_USERS_SERVICE_URL
 ARG NODE_ENV
-ENV NODE_ENV $NODE_ENV
-ENV REACT_APP_USERS_SERVICE_URL $REACT_APP_USERS_SERVICE_URL
+ENV NODE_ENV=$NODE_ENV
+ENV REACT_APP_USERS_SERVICE_URL=$REACT_APP_USERS_SERVICE_URL
 
 RUN set -euxo pipefail \
     && npm install --global --registry=https://registry.npm.taobao.org \
@@ -18,18 +18,10 @@ RUN set -euxo pipefail \
         react-scripts \
         pushstate-server
 
-# add `/usr/src/app/node_modules/.bin` to $PATH
-# ENV PATH /usr/src/app/node_modules/.bin:$PATH
-
-# install and cache app dependencies
-# ADD package.json /usr/src/app/package.json
-# RUN npm install --silent
-# RUN npm install react-scripts@0.9.5 -g --silent
-
 # add app
 # ADD . /usr/src/app
 
-# EXPOSE 3000
+EXPOSE 9000
 
 # start app
 # CMD ["npm", "start"]

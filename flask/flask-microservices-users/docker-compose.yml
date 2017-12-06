@@ -17,7 +17,7 @@ services:
     networks:
       - bridge
     ports:
-      - '5000:5000'
+      - '5001:5000'
     environment:
       # - APP_SETTINGS=project.config.TestingConfig
       - APP_SETTINGS=project.config.DevelopmentConfig
@@ -30,7 +30,7 @@ services:
         condition: service_healthy
     links:
       - users-db
-    command: gunicorn -b 0.0.0.0:5000 manage:app
+    # command: gunicorn -b 0.0.0.0:5000 manage:app
 
   web-service:
     container_name: web-service
@@ -66,7 +66,7 @@ services:
     networks:
       - bridge
     ports:
-        - '5432:5432'
+        - '5435:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

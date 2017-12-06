@@ -13,9 +13,7 @@ COV = coverage.coverage(
     branch=True,
     include='project/*',
     omit=[
-        'project/tests/*',
-        'project/server/config.py',
-        'project/server/*/__init__.py'
+        'project/tests/*'
     ]
 )
 COV.start()

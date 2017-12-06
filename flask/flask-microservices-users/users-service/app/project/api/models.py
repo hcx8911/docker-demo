@@ -5,7 +5,8 @@ import datetime
 
 import jwt
 from flask import current_app
-from project import bcrypt, db
+
+from project import db, bcrypt
 
 
 class User(db.Model):
@@ -20,7 +21,7 @@ class User(db.Model):
 
     def __init__(
             self, username, email, password,
-            created_at=datetime.datetime.utcnow()):
+            created_at=datetime.datetime.now()):
         self.username = username
         self.email = email
         self.password = bcrypt.generate_password_hash(
@@ -51,7 +52,8 @@ class User(db.Model):
     def decode_auth_token(auth_token):
         """Decodes the auth token - :param auth_token: - :return: integer|string"""
         try:
-            payload = jwt.decode(auth_token, current_app.config.get('SECRET_KEY'))
+            payload = jwt.decode(
+                auth_token, current_app.config.get('SECRET_KEY'))
             return payload['sub']
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'

@@ -3,9 +3,7 @@
 
 from flask_testing import TestCase
 
-from project import db
-
-from project import create_app
+from project import create_app, db
 
 app = create_app()
 
