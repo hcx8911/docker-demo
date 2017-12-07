@@ -26,11 +26,10 @@ RUN set -euxo pipefail \
 EXPOSE 9000
 
 # start app
-# CMD ["npm", "start"]
-# CMD yarn start
+CMD ["npm", "start"]
 
 # start app
-CMD ["pushstate-server", "build"]
+# CMD ["pushstate-server", "build"]
 # CMD sh
 
 # 编译及执行方法如下:

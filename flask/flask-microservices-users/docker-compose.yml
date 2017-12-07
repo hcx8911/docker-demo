@@ -22,7 +22,7 @@ services:
       - APP_SETTINGS=project.config.DevelopmentConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
-      - SECRET_KEY=${SECRET_KEY}
+      - SECRET_KEY=my_precious
     depends_on:
       users-db:
         condition: service_healthy
@@ -37,7 +37,7 @@ services:
       # context: https://github.com/realpython/flask-microservices-client.git
       args:
         - NODE_ENV=development
-        - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+        - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
     volumes:
       - ./users-client/app:/usr/src/app
     networks:
@@ -84,7 +84,7 @@ services:
     container_name: users-nginx
     build:
       context: users-nginx
-    restart: always
+    # restart: always
     networks:
       - bridge
     ports:

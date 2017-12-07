@@ -15,10 +15,12 @@ docker-compose up -d --build
 docker ps -a
 docker-compose exec users-service python manage.py recreate_db
 docker-compose exec users-service python manage.py seed_db
-docker-compose exec users-service python manage.py test
+# docker-compose exec users-service python manage.py test
 docker-compose exec users-service python manage.py cov
 docker-compose down
 # testcafe chrome e2e
+
+# docker ps -a
 
 # docker-compose exec -ti users-db psql -U postgres -W
 

@@ -16,6 +16,7 @@ COPY requirements.txt ./
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
         postgresql-dev \
+        netcat-openbsd \
     && apk add --virtual .fetch-deps \
         build-base \
         python3-dev \
@@ -28,8 +29,12 @@ RUN set -euxo pipefail \
 
 EXPOSE 5000
 
+ADD ./entrypoint.sh /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
+
 # CMD [ "python", "./start.py" ]
-CMD python manage.py runserver -h 0.0.0.0
+# CMD python manage.py runserver -h 0.0.0.0
 
 # # install environment dependencies
 # RUN apt-get update -yqq \

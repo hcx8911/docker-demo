@@ -1,7 +1,7 @@
 # project/api/auth.py
 
 
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, jsonify, request
 from sqlalchemy import exc, or_
 
 from project.api.utils import authenticate
@@ -14,6 +14,7 @@ auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/auth/register', methods=['POST'])
 def register_user():
+    print('here')
     # get post data
     post_data = request.get_json()
     if not post_data:
@@ -21,14 +22,14 @@ def register_user():
             'status': 'error',
             'message': 'Invalid payload.'
         }
-        return make_response(jsonify(response_object)), 400
+        return jsonify(response_object), 400
     username = post_data.get('username')
     email = post_data.get('email')
     password = post_data.get('password')
     try:
         # check for existing user
         user = User.query.filter(
-            or_(User.username == username, User.email == email)).first()
+            or_(User.username == username, User.email==email)).first()
         if not user:
             # add new user to db
             new_user = User(
@@ -45,13 +46,13 @@ def register_user():
                 'message': 'Successfully registered.',
                 'auth_token': auth_token.decode()
             }
-            return make_response(jsonify(response_object)), 201
+            return jsonify(response_object), 201
         else:
             response_object = {
                 'status': 'error',
                 'message': 'Sorry. That user already exists.'
             }
-            return make_response(jsonify(response_object)), 400
+            return jsonify(response_object), 400
     # handler errors
     except (exc.IntegrityError, ValueError) as e:
         db.session().rollback()
@@ -59,7 +60,7 @@ def register_user():
             'status': 'error',
             'message': 'Invalid payload.'
         }
-        return make_response(jsonify(response_object)), 400
+        return jsonify(response_object), 400
 
 
 @auth_blueprint.route('/auth/login', methods=['POST'])
@@ -71,7 +72,7 @@ def login_user():
             'status': 'error',
             'message': 'Invalid payload.'
         }
-        return make_response(jsonify(response_object)), 400
+        return jsonify(response_object), 400
     email = post_data.get('email')
     password = post_data.get('password')
     try:
@@ -85,20 +86,20 @@ def login_user():
                     'message': 'Successfully logged in.',
                     'auth_token': auth_token.decode()
                 }
-                return make_response(jsonify(response_object)), 200
+                return jsonify(response_object), 200
         else:
             response_object = {
                 'status': 'error',
                 'message': 'User does not exist.'
             }
-            return make_response(jsonify(response_object)), 404
+            return jsonify(response_object), 404
     except Exception as e:
         print(e)
         response_object = {
             'status': 'error',
             'message': 'Try again.'
         }
-        return make_response(jsonify(response_object)), 500
+        return jsonify(response_object), 500
 
 
 @auth_blueprint.route('/auth/logout', methods=['GET'])
@@ -108,7 +109,7 @@ def logout_user(resp):
         'status': 'success',
         'message': 'Successfully logged out.'
     }
-    return make_response(jsonify(response_object)), 200
+    return jsonify(response_object), 200
 
 
 @auth_blueprint.route('/auth/status', methods=['GET'])
@@ -125,4 +126,4 @@ def get_user_status(resp):
             'created_at': user.created_at
         }
     }
-    return make_response(jsonify(response_object)), 200
+    return jsonify(response_object), 200
