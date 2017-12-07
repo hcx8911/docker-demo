@@ -10,8 +10,7 @@ services:
     container_name: users-service
     build:
       context: users-service
-    # build: https://github.com/realpython/flask-microservices-users.git
-    # image: users-service
+      # context: https://github.com/realpython/flask-microservices-users.git
     volumes:
       - ./users-service/app:/usr/src/app
     networks:
@@ -19,12 +18,10 @@ services:
     expose:
       - '5000'
     environment:
-      # - APP_SETTINGS=project.config.TestingConfig
-      # - APP_SETTINGS=project.config.DevelopmentConfig
       - APP_SETTINGS=project.config.ProductionConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
-      - SECRET_KEY=e090d38ec1ce70d4fa62712718ef9c54f08402eeebba6c02
+      - SECRET_KEY=${SECRET_KEY}
     depends_on:
       users-db:
         condition: service_healthy
@@ -34,33 +31,41 @@ services:
 
   users-client:
     container_name: users-client
-    # image: users-client
-    # build: https://github.com/realpython/flask-microservices-client.git
     build:
       context: users-client
+      # context: https://github.com/realpython/flask-microservices-client.git
       args:
         - NODE_ENV=development
-        - REACT_APP_USERS_SERVICE_URL=http://users-service:5000/
-        # - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
-    # image: users-client
     volumes:
       - ./users-client/app:/usr/src/app
     networks:
       - bridge
     ports:
-      - '9000:9000' # expose ports - HOST:CONTAINER
+      - '9000:9000'
     depends_on:
       users-service:
         condition: service_started
     links:
       - users-service
 
+  users-swagger:
+    container_name: users-swagger
+    build:
+      context: users-swagger
+    ports:
+      - '8080:8080' # expose ports - HOST:CONTAINER
+    environment:
+      - API_URL=/swagger-prod.json
+      # - API_URL=https://raw.githubusercontent.com/realpython/flask-microservices-swagger/master/swagger.json
+    depends_on:
+      users-service:
+        condition: service_started
+
   users-db:
     container_name: users-db
     build:
       context: users-db
-    # context: https://github.com/realpython/flask-microservices-users.git#master:project/db
-    # image: users-db
+      # context: https://github.com/realpython/flask-microservices-users.git#master:project/db
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -77,8 +82,7 @@ services:
     container_name: users-nginx
     build:
       context: users-nginx
-    # image: users-nginx
-    # restart: always
+    restart: always
     networks:
       - bridge
     ports:

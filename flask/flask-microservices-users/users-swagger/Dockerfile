@@ -3,6 +3,7 @@ FROM swaggerapi/swagger-ui
 LABEL MAINTAINER="WaterBolik@163.com"
 
 ADD swagger.json /swagger.json
+ADD swagger-prod.json /swagger-prod.json
 
 ENV API_URL=/swagger.json
 

@@ -15,11 +15,12 @@ services:
       - ./users-service/app:/usr/src/app
     networks:
       - bridge
-    ports:
-      - '5001:5000'
+    expose:
+      - '5000'
+    # ports:
+    #   - '5001:5000'
     environment:
-      # - APP_SETTINGS=project.config.TestingConfig
-      - APP_SETTINGS=project.config.DevelopmentConfig
+      - APP_SETTINGS=project.config.StagingConfig
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
       - SECRET_KEY=${SECRET_KEY}
@@ -28,7 +29,7 @@ services:
         condition: service_healthy
     links:
       - users-db
-    # command: gunicorn -b 0.0.0.0:5000 manage:app
+    command: gunicorn -b 0.0.0.0:5000 manage:app
 
   users-client:
     container_name: users-client
@@ -43,7 +44,7 @@ services:
     networks:
       - bridge
     ports:
-      - '9000:9000' # expose ports - HOST:CONTAINER
+      - '9000:9000'
     depends_on:
       users-service:
         condition: service_started
@@ -54,8 +55,9 @@ services:
     container_name: users-swagger
     build:
       context: users-swagger
+      # context: https://github.com/realpython/flask-microservices-swagger.git
     ports:
-      - '8080:8080' # expose ports - HOST:CONTAINER
+      - '8080:8080'
     environment:
       - API_URL=/swagger.json
       # - API_URL=https://raw.githubusercontent.com/realpython/flask-microservices-swagger/master/swagger.json
@@ -67,13 +69,15 @@ services:
     container_name: users-db
     build:
       context: users-db
-    # context: https://github.com/realpython/flask-microservices-users.git#master:project/db
+      # context: https://github.com/realpython/flask-microservices-users.git#master:project/db
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - bridge
-    ports:
-        - '5435:5432'
+    expose:
+        - '5432'
+    # ports:
+    #     - '5435:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
