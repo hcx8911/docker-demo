@@ -30,6 +30,7 @@ RUN set -eux \
             echo '{'; \ 
             echo '  "registry-mirrors": ['; \
             echo '    "https://registry.docker-cn.com"'; \ 
+            echo '    "https://mirrors.ustc.edu.cn/dockerhub/"'; \ 
             echo '  ]'; \
             echo '}'; \ 
         } > /etc/docker/daemon.json \ 
