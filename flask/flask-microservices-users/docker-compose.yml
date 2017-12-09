@@ -54,6 +54,8 @@ services:
     container_name: users-swagger
     build:
       context: users-swagger
+    networks:
+      - bridge
     ports:
       - '8080:8080' # expose ports - HOST:CONTAINER
     environment:
@@ -111,27 +113,3 @@ services:
 
 volumes:
   postgres-data: {}
-
-# 编译镜像
-# $ docker-compose build
-# 创建和运行容器组
-# $ docker-compose up -d
-# 创建数据库
-# $ docker-compose exec users-service python manage.py recreate_db
-# 创建测试数据
-# $ docker-compose exec users-service python manage.py seed_db
-# 测试
-# $ docker-compose exec users-service python manage.py test
-# 覆盖测试
-# $ docker-compose exec users-service python manage.py cov
-# 停止容器组
-# $ docker-compose stop
-# 终止容器组运行并删除容器
-# $ docker-compose down
-# 强制重新编译镜像
-# $ docker-compose build --no-cache
-# 使用psgl连接数据库进行测试
-# $ docker exec -ti users-db psql -U postgres -W
-#   \c users_dev
-#   \dt
-#   \q

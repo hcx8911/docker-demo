@@ -6,7 +6,7 @@ $ROOTPATH = "B:\OpenSource\WaterBolik\docker-demo"
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
-docker pull alpine:3.6
+docker pull alpine:3.7
 
 docker pull centos:latest
 docker pull centos:7

@@ -7,7 +7,7 @@ ln -snf ${ROOTPATH}/flask/flask-microservices-users/flask.xiki ~/xiki/flask.xiki
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
-docker pull alpine:3.6
+docker pull alpine:3.7
 
 docker pull centos:latest
 docker pull centos:7
