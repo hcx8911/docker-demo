@@ -8,8 +8,11 @@ inspect() {
   fi
 }
 
-docker-compose run --rm users-service python manage.py test
+docker-compose run users-service python manage.py test
 inspect $? users-service
+
+docker-compose run eval-service python manage.py test
+inspect $? eval-service
 
 testcafe chrome e2e
 inspect $? e2e

@@ -2,8 +2,8 @@
 
 ROOTPATH=~/OpenSource/WaterBolik/docker-demo
 
-ln -snf ${ROOTPATH}/docker.xiki ~/xiki/docker.xiki
-ln -snf ${ROOTPATH}/flask/flask-microservices-users/flask.xiki ~/xiki/flask.xiki
+ln -snf ${ROOTPATH}/docker.md ~/xiki/docker.xiki
+ln -snf ${ROOTPATH}/flask/flask-microservices-users/flask.md ~/xiki/flask.xiki
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest

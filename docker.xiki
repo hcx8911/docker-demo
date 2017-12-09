@@ -1,25 +1,3 @@
-## 查看docker版本
-$ docker version
-
-## 查看本地镜像
-$ docker images
-
-## 创建并运行一个最小的linux系统
-$ docker run -i -t --rm alpine sh
-
-## 查看所有镜像，包括已经停止运行的
-$ docker ps -a
-
-## 删除容器，id name 都可以， id只要输正确前面几位即可 
-$ docker rm
-
-## 查看docker系统使用空间
-$ docker system df
-
-## 清理临时镜像和容器
-$ docker system prune -f
-
-
 
 
 

@@ -9,7 +9,7 @@ $ docker-compose up -d
 ## 查看容器状态
 $ docker ps -a
 
-# users-service 管理
+## users-service 管理
 ## 创建数据库
 $ docker-compose exec users-service python manage.py recreate_db
 ## 创建测试数据
@@ -25,13 +25,13 @@ $ docker-compose exec users-service python manage.py db migrate
 ## 数据库更新
 $ docker-compose exec users-service python manage.py db upgrade
 
-# 创建秘钥
+## 创建秘钥
 $ docker-compose exec users-service python
-# 在python中执行如下语句
+## 在python中执行如下语句
 import binascii, os
 binascii.hexlify(os.urandom(24))
 
-# users-client 项目管理
+## users-client 项目管理
 ## 创建 react 项目
 $ docker-compose exec users-client create-react-app .
 ## 安装 react 插件
