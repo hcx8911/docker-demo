@@ -1,3 +1,59 @@
+$ ROOTPATH=~/OpenSource/WaterBolik/docker-demo/
+$ cd $ROOTPATH
 
+## 查看docker版本
+$ docker version
+$ docker run --rm hello-world
 
+## 查看本地镜像
+$ docker images
 
+## 创建并运行一个最小的linux系统
+$ docker run -it --rm alpine sh
+
+## 查看所有镜像，包括已经停止运行的
+$ docker ps -a
+
+## 构建镜像
+$ docker build -t alpine_base ${ROOTPATH}/os_base/alpine_base/
+
+## 理解volumes
+$ docker volume create data
+$ docker run -it --rm --mount source=data,target=/data --name demo alpine_base
+$ docker run -it --rm --mount source=data,target=/data,readonly --name demo alpine_base
+# $ docker run -it --rm --mount type=bind,source="$(pwd)"/data,target=/data --name demo alpine_base
+$ docker run -it --rm --mount type=bind,source="$(pwd)"/data,target=/data,readonly --name demo alpine_base
+$ docker run -it --rm --mount type=tmpfs,destination=/app --name demo alpine_base
+$ docker run -it -v data:/data --name demo alpine_base
+$ docker inspect demo
+$ docker inspect data
+$ docker rm demo
+
+## 删除容器，id name 都可以， id只要输正确前面几位即可
+$ docker rm demo
+## 删除本地镜像
+$ docker rmi hello-world
+
+## 查看docker系统使用空间
+$ docker system df
+
+## 清理临时镜像和容器（删除所有已停止容器，清除所有没有打标签的非引用镜像）
+$ docker system prune -f
+
+## 清理数据卷（没有与容器关联的数据卷）
+$ docker volume prune -f
+
+## 停止所有容器
+$ docker stop $(docker ps -q)
+
+## 删除所有已停止容器
+$ docker rm $(docker ps -aq)
+
+## 停止并删除所有容器
+$ docker stop $(docker ps -q) & docker rm $(docker ps -aq)
+
+## 删除所有本地镜像（慎用，拉取镜像不易，尤其是网络不好的情况）
+$ docker rmi $(docker images -q -a)
+
+## 删除所有磁盘映射（慎用，会删除容器映射数据）
+$ docker volume rm $(docker volume ls -q)

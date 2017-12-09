@@ -2,8 +2,8 @@
 
 ROOTPATH=~/OpenSource/WaterBolik/docker-demo
 
-ln -snf ${ROOTPATH}/docker.md ~/xiki/docker.xiki
-ln -snf ${ROOTPATH}/flask/flask-microservices-users/flask.md ~/xiki/flask.xiki
+ln -snf ${ROOTPATH}/docker.xiki ~/xiki/docker.xiki
+ln -snf ${ROOTPATH}/flask/flask-microservices-users/flask.xiki ~/xiki/flask.xiki
 
 # base image pull -------------------------------------------------------------
 docker pull alpine:latest
@@ -66,8 +66,10 @@ docker build -t alpine-nodejs ${ROOTPATH}/nodejs/alpine-nodejs/
 # 查看Docker的磁盘使用情况
 docker system df
 
-# 清理dangling镜像(参考What are Docker : images?)和容器，以及失效的数据卷和网络。
+# 清理临时镜像和容器（删除所有已停止容器，清除所有没有打标签的非引用镜像）
 docker system prune -f
+# 清理数据卷（没有与容器关联的数据卷）
+docker volume prune -f
 
 # 查看Docker的磁盘使用情况
 docker system df
