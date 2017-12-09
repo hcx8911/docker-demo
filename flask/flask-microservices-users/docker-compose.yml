@@ -30,6 +30,27 @@ services:
       - users-db
     # command: gunicorn -b 0.0.0.0:5000 manage:app
 
+  users-eval:
+    container_name: users-eval
+    build:
+      context: users-eval
+      # context: https://github.com/realpython/flask-microservices-eval.git
+    volumes:
+      - ./users-eval/app:/usr/src/app
+    networks:
+      - bridge
+    ports:
+      - '5002:5000'
+    environment:
+      # - APP_SETTINGS=project.config.TestingConfig
+      - APP_SETTINGS=project.config.DevelopmentConfig
+      - USERS_SERVICE_URL=http://users-service:5000
+    depends_on:
+      users-service:
+        condition: service_started
+    links:
+      - users-service
+
   users-client:
     container_name: users-client
     build:

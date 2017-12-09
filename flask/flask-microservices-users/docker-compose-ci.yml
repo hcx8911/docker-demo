@@ -36,6 +36,7 @@ services:
       # context: https://github.com/realpython/flask-microservices-client.git
       args:
         - NODE_ENV=development
+        - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
     volumes:
       - ./users-client/app:/usr/src/app
     networks:
