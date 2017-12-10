@@ -52,7 +52,7 @@ RUN set -euxo pipefail \
     \
     && yum clean all
 
-CMD ["bin/bash"]
+# CMD ["bin/bash"]
 
 # 查看系统版本
 # $ rpm -qi centos-release

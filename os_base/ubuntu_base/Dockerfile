@@ -42,7 +42,7 @@ RUN set -eux \
     && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-CMD ["bin/bash"]
+# CMD ["bin/bash"]
 
 # $ docker build -t ubuntu_base ~/OpenSource/WaterBolik/docker-demo/os_base/ubuntu_base/
 # $ docker build -t ubuntu_base B:/OpenSource/WaterBolik/docker-demo/os_base/ubuntu_base/

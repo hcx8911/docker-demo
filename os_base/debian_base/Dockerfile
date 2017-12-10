@@ -64,7 +64,7 @@ RUN set -eux \
     && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-CMD ["bin/bash"]
+# CMD ["bin/bash"]
 
 # 查看系统版本
 # $ cat /etc/issue
