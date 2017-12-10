@@ -17,9 +17,12 @@ LABEL MAINTAINER="WaterBolik@163.com"
 #     && echo "end"
 
 # 编译安装
+# https://www.python.org/
 # https://github.com/docker-library/python/blob/master/2.7/alpine3.6/Dockerfile
 ARG PYTHON_VERSION=2.7.14
 ARG PYTHON_PIP_VERSION=9.0.1
+# ARG PIP_MIRROR=https://pypi.tuna.tsinghua.edu.cn/simple
+ARG PIP_MIRROR=https://mirrors.aliyun.com/pypi/simple/
 RUN set -euxo pipefail \
     && apk add --update --no-cache --virtual .fetch-deps \
         ca-certificates \
@@ -99,6 +102,18 @@ RUN set -euxo pipefail \
     && pip --version \
     && rm -f get-pip.py \
     \
+    && mkdir -p ${HOME}/.pip \
+    &&  { \
+            echo "[global]"; \
+            echo "index-url = ${PIP_MIRROR}"; \
+        } \
+        > ${HOME}/.pip/pip.conf \
+    && pip freeze --all --local \
+        | grep -v '^\-e' \
+        | cut -d = -f 1 \
+        | xargs pip install --no-cache-dir --upgrade \
+            -i "${PIP_MIRROR}" \
+    \
     && find /usr/local -depth \
         \( \
             \( -type d -a \( -name test -o -name tests \) \) \
@@ -109,18 +124,6 @@ RUN set -euxo pipefail \
     && apk del .build-deps \
     && apk del .fetch-deps \
     && rm -rf /var/cache/apk/*
-
-# 配置pip镜像
-# ARG PIP_MIRROR=pypi.tuna.tsinghua.edu.cn
-# ARG PIP_MIRROR=mirrors.aliyun.com/pypi
-# RUN set -euxo pipefail \
-#     && mkdir -p ${HOME}/.pip \
-#     &&  { \
-#             echo "[global]"; \
-#             echo "index-url = https://${PIP_MIRROR}/simple"; \
-#         } \
-#         > ${HOME}/.pip/pip.conf \
-#     && pip install --no-cache-dir --upgrade --force-reinstall pip
 
 CMD ["python"]
 

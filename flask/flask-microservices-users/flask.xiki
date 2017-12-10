@@ -24,12 +24,31 @@ $ docker-compose exec users-service python manage.py db init
 $ docker-compose exec users-service python manage.py db migrate
 ## 数据库更新
 $ docker-compose exec users-service python manage.py db upgrade
-
+## 保存固化python包
+$ docker-compose exec users-service pip freeze --all > requirements.txt
 ## 创建秘钥
 $ docker-compose exec users-service python
 ## 在python中执行如下语句
 import binascii, os
 binascii.hexlify(os.urandom(24))
+
+## users-eval 管理
+## 创建数据库
+$ docker-compose exec users-eval python manage.py recreate_db
+## 创建测试数据
+$ docker-compose exec users-eval python manage.py seed_db
+## 测试
+$ docker-compose exec users-eval python manage.py test
+## 覆盖测试
+$ docker-compose exec users-eval python manage.py cov
+## 数据库维护初始化
+$ docker-compose exec users-eval python manage.py db init
+## 数据库维护准备
+$ docker-compose exec users-eval python manage.py db migrate
+## 数据库更新
+$ docker-compose exec users-eval python manage.py db upgrade
+## 保存固化python包
+$ docker-compose exec users-eval pip freeze --all > requirements.txt
 
 ## users-client 项目管理
 ## 创建 react 项目
@@ -42,7 +61,6 @@ $ docker-compose exec users-client yarn add react-router-bootstrap
 $ docker-compose exec users-client yarn add react-ace
 ## 编译项目
 $ docker-compose exec users-client npm run build
-
 
 ## 停止容器组
 $ docker-compose stop

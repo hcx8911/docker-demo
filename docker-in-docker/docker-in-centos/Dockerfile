@@ -3,8 +3,8 @@ FROM centos_systemd
 LABEL MAINTAINER="WaterBolik@163.com"
 
 # 安装 Docker CE
-# ARG YUM_MIRROR=download.docker.com
-ARG YUM_MIRROR=mirrors.aliyun.com/docker-ce
+# ARG DCE_MIRROR=download.docker.com
+ARG DCE_MIRROR=mirrors.aliyun.com/docker-ce
 RUN set -euxo pipefail \
     && yum -y install \
         yum-utils \
@@ -12,21 +12,21 @@ RUN set -euxo pipefail \
         lvm2 \
     && yum-config-manager \
         --add-repo \
-        https://${YUM_MIRROR}/linux/centos/docker-ce.repo \
+        https://${DCE_MIRROR}/linux/centos/docker-ce.repo \
     && yum -y install \
         docker-ce \
-    && yum clean all \   
+    && yum clean all \
     && mkdir -p /etc/docker \
     &&  { \
-            echo '{'; \ 
+            echo '{'; \
             echo '  "registry-mirrors": ['; \
-            echo '    "https://registry.docker-cn.com"'; \ 
-            echo '    "https://mirrors.ustc.edu.cn/dockerhub/"'; \ 
+            echo '    "https://registry.docker-cn.com"'; \
+            echo '    "https://mirrors.ustc.edu.cn/dockerhub/"'; \
             echo '  ]'; \
-            echo '}'; \ 
-        } > /etc/docker/daemon.json \ 
+            echo '}'; \
+        } > /etc/docker/daemon.json \
     && systemctl enable docker \
-    && echo "end"      
+    && echo "end"
     # 增加非稳定版Docker安装源
     # yum-config-manager --enable docker-ce-edge
     # yum-config-manager --enable docker-ce-test
@@ -39,14 +39,14 @@ RUN set -euxo pipefail \
 # RUN set -euxo pipefail \
 #     && curl -fsSL get.docker.com -o get-docker.sh \
 #     && sh get-docker.sh \
-#     && yum clean all \   
+#     && yum clean all \
 #     && systemctl enable docker \
-#     && echo "end"   
+#     && echo "end"
 
-    
+
 # $ docker build -t docker-in-centos /Volumes/Work/OpenSource/WaterBolik/docker-demo/docker-in-docker/docker-in-centos/
 # $ docker build -t docker-in-centos ~/OpenSource/WaterBolik/docker-demo/docker-in-docker/docker-in-centos/
 # $ docker build -t docker-in-centos B:/OpenSource/WaterBolik/docker-demo/docker-in-docker/docker-in-centos/
-# $ docker run -it --rm --name docker-in-centos --privileged=true -d docker-in-centos 
+# $ docker run -it --rm --name docker-in-centos --privileged=true -d docker-in-centos
 # $ docker exec -it docker-in-centos bash
 # $ docker stop docker-in-centos

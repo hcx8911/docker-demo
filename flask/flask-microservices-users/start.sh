@@ -24,8 +24,8 @@ docker-compose exec users-eval python manage.py cov
 # testcafe chrome e2e
 
 docker ps -a
-docker-compose down
-docker ps -a
+# docker-compose down
+# docker ps -a
 
 # docker-compose exec -ti users-db psql -U postgres -W
 

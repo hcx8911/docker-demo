@@ -12,7 +12,17 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+# ARG PIP_MIRROR=https://pypi.tuna.tsinghua.edu.cn/simple
+ARG PIP_MIRROR=https://mirrors.aliyun.com/pypi/simple/
+RUN set -euxo pipefail \
+    && pip install --no-cache-dir \
+        -i "${PIP_MIRROR}" \
+        -r requirements.txt \
+    && pip freeze --all --local \
+        | grep -v '^\-e' \
+        | cut -d = -f 1 \
+        | xargs pip install --no-cache-dir --upgrade \
+            -i "${PIP_MIRROR}"
 
 CMD [ "python", "./start.py" ]
 

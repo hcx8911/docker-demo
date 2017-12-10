@@ -11,8 +11,8 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-# ARG PIP_MIRROR=pypi.tuna.tsinghua.edu.cn
-# ARG PIP_MIRROR=mirrors.aliyun.com/pypi
+# ARG PIP_MIRROR=https://pypi.tuna.tsinghua.edu.cn/simple
+ARG PIP_MIRROR=https://mirrors.aliyun.com/pypi/simple/
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
         postgresql-dev \
@@ -21,9 +21,14 @@ RUN set -euxo pipefail \
         build-base \
         python3-dev \
         libffi-dev \
-    && pip install --no-cache-dir --upgrade \
-        -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    && pip install --no-cache-dir \
+        -i "${PIP_MIRROR}" \
         -r requirements.txt \
+    && pip freeze --all --local \
+        | grep -v '^\-e' \
+        | cut -d = -f 1 \
+        | xargs pip install --no-cache-dir --upgrade \
+            -i "${PIP_MIRROR}" \
     && apk del .fetch-deps \
     && rm -rf /var/cache/apk/*
 
@@ -34,7 +39,7 @@ ADD ./entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]
 # CMD python manage.py runserver -h 0.0.0.0
 # CMD gunicorn -b 0.0.0.0:5000 manage:app
-
+# CMD pip freeze --all > requirements.txt
 # 编译及执行方法如下:
 # docker build -t users-service ~/OpenSource/WaterBolik/docker-demo/flask/flask-microservices-users/users-service/
 # docker build -t users-service B:\OpenSource\WaterBolik\docker-demo\flask\flask-microservices-users\users-service\
