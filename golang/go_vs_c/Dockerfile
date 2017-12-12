@@ -1,12 +1,13 @@
-# FROM golang:alpine as gobuilder
-FROM alpine-golang as gobuilder
+# FROM golang
+FROM golang:alpine as gobuilder
+# FROM alpine_base
 
 LABEL MAINTAINER="WaterBolik@163.com"
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
 # COPY /src/* .
-COPY /app/httpserver.go .
+COPY /src/go/hello.go .
 
 # 在主流编程语言中，Go的移植性已经是数一数二的了，
 # 尤其是Go 1.5之后，Go将runtime中的C代码都用Go重写了，
@@ -14,14 +15,14 @@ COPY /app/httpserver.go .
 # 并且默认情况下，即在CGO_ENABLED=1的情况下，程序和预编译的标准库都采用了C的实现。
 # 关于这方面的详细论述请参见我之前写的《也谈Go的可移植性》一文，这里就不赘述了。
 # http://tonybai.com/2017/06/27/an-intro-about-go-portability/
-RUN CGO_ENABLED=0 go build -o myhttpserver ./httpserver.go
+RUN CGO_ENABLED=0 go build -o hello ./hello.go
 
 FROM alpine-base
 
 WORKDIR /root/
 
-COPY --from=gobuilder /usr/src/myhttpserver .
+COPY --from=gobuilder /usr/src/hello .
 
-RUN chmod +x /root/myhttpserver
+RUN chmod +x /root/hello
 
-ENTRYPOINT ["/root/myhttpserver"]
+ENTRYPOINT ["/root/hello"]

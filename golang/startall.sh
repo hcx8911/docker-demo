@@ -2,12 +2,12 @@
 
 ROOTPATH=~/OpenSource/WaterBolik/docker-demo/golang
 
-# docker build -t alpine-golang ${ROOTPATH}/alpine-golang/
+docker build -t alpine-golang ${ROOTPATH}/alpine-golang/
 # docker run -it --rm arg
 
 docker build -t golang-demo ${ROOTPATH}/golang-demo/
 docker run -it --rm \
-    --mount type=bind,source="${ROOTPATH}/golang-demo/src",target=/usr/src,readonly \
+    --mount type=bind,source="${ROOTPATH}/golang-demo/app",target=/usr/src/app,readonly \
     golang-demo
 
 # # 查看Docker的磁盘使用情况
