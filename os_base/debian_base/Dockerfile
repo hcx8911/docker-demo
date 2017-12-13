@@ -51,7 +51,7 @@ RUN set -eux \
         /etc/apt/sources.list \
     \
     && apt-get update -y --fix-missing \
-    && apt-get install -y --no-install-recommends --fix-missing \
+    && apt-get install -y --no-install-recommends \
         apt-utils \
         locales \
         tzdata \

@@ -40,6 +40,11 @@ docker build -t centos_systemd ${ROOTPATH}/os_base/centos_systemd/
 docker build -t debian_base ${ROOTPATH}/os_base/debian_base/
 docker build -t ubuntu_base ${ROOTPATH}/os_base/ubuntu_base/
 
+docker build -t alpine-buildpack ${ROOTPATH}/buildpack/alpine-buildpack/
+docker build -t centos-buildpack ${ROOTPATH}/buildpack/centos-buildpack/
+docker build -t debian-buildpack ${ROOTPATH}/buildpack/debian-buildpack/
+docker build -t ubuntu-buildpack ${ROOTPATH}/buildpack/ubuntu-buildpack/
+
 # docker in docker
 docker build -t docker-in-centos ${ROOTPATH}/docker-in-docker/docker-in-centos/
 docker build -t docker-in-debian ${ROOTPATH}/docker-in-docker/docker-in-debian/
