@@ -1,12 +1,11 @@
 #!/bin/bash
 
-ROOTPATH=~/OpenSource/WaterBolik/docker-demo/golang/golang-demo/
+ROOTPATH=~/OpenSource/WaterBolik/docker-demo/golang/go_vs_c/
 
-docker rmi golang-demo
-docker build -t golang-demo ${ROOTPATH}
-docker run -it --rm --name golang-demo -p 1111:1111 -d golang-demo
-curl http://localhost:1111
-docker stop golang-demo
+docker build -t go_vs_c ${ROOTPATH}
+docker run -it --rm go_vs_c
+# curl http://localhost:1111
+# docker stop go_vs_c
 
     # --mount type=bind,source="${ROOTPATH}/app",target=/usr/src/app,readonly \
 

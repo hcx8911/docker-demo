@@ -1,5 +1,5 @@
 # FROM golang
-FROM golang:alpine as gobuilder
+FROM alpine-golang as gobuilder
 # FROM alpine_base
 
 LABEL MAINTAINER="WaterBolik@163.com"
@@ -15,14 +15,30 @@ COPY /src/go/hello.go .
 # 并且默认情况下，即在CGO_ENABLED=1的情况下，程序和预编译的标准库都采用了C的实现。
 # 关于这方面的详细论述请参见我之前写的《也谈Go的可移植性》一文，这里就不赘述了。
 # http://tonybai.com/2017/06/27/an-intro-about-go-portability/
-RUN CGO_ENABLED=0 go build -o hello ./hello.go
+RUN set -euxo pipefail \
+    && CGO_ENABLED=0 go build -o hellogo ./hello.go
 
-FROM alpine-base
+# RUN go build -o hellogo ./hello.go
+
+FROM alpine-golang as gccbuilder
+
+WORKDIR /usr/src
+
+# COPY /src/* .
+COPY /src/c/hello.c .
+
+RUN set -euxo pipefail \
+    && cc -o helloc hello.c
+
+FROM alpine_base
 
 WORKDIR /root/
 
-COPY --from=gobuilder /usr/src/hello .
+COPY --from=gobuilder /usr/src/hellogo .
+COPY --from=gccbuilder /usr/src/helloc .
 
-RUN chmod +x /root/hello
+RUN chmod +x hellogo helloc
 
-ENTRYPOINT ["/root/hello"]
+# ENTRYPOINT ["/root/hellogo", ""]
+
+# CMD /root/hellogo && /root/helloc
