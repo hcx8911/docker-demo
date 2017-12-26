@@ -12,7 +12,7 @@ docker pull alpine:3.7
 docker pull centos:latest
 docker pull centos:7
 # docker pull centos:7.4.1708
-docker pull centos:6
+# docker pull centos:6
 # docker pull centos:6.9
 
 docker pull debian:latest
@@ -24,18 +24,18 @@ docker pull ubuntu:16.04
 docker pull docker
 docker pull docker:dind
 
-docker pull mysql
+# docker pull mysql
 docker pull mysql/mysql-server
 docker pull mysql/mysql-cluster
 docker pull postgres:alpine
 docker pull adminer
 
-docker pull jenkins/jenkins:lts-alpine
+# docker pull jenkins/jenkins:lts-alpine
 
 # os base images
 docker build -t alpine_base ${ROOTPATH}/os_base/alpine_base/
 docker build -t centos_base ${ROOTPATH}/os_base/centos_base/
-docker build -t centos6_base ${ROOTPATH}/os_base/centos6_base/
+# docker build -t centos6_base ${ROOTPATH}/os_base/centos6_base/
 docker build -t centos_systemd ${ROOTPATH}/os_base/centos_systemd/
 docker build -t debian_base ${ROOTPATH}/os_base/debian_base/
 docker build -t ubuntu_base ${ROOTPATH}/os_base/ubuntu_base/
