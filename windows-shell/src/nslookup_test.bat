@@ -1,0 +1,2 @@
+REM NSLOOKUP
+REM 查看主机的IP地址和主机名称
