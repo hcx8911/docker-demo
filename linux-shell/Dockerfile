@@ -12,11 +12,12 @@ WORKDIR /usr/src
 
 RUN set -euxo pipefail \
     && apk add --update --no-cache \
-        psmisc \
-        htop \
-        procps \
         glances \
+        htop \
         iotop \
+        nmap \
+        procps \
+        psmisc \
     && rm -rf /var/cache/apk/*
 
 EXPOSE 61209

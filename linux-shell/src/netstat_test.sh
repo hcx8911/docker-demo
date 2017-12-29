@@ -9,6 +9,16 @@ cd ${ROOTPATH}
 # 该工具在识别某个应用监听哪个端口时特别有用，我们也能用它来判断某个应用是否正常的在监听某个端口。
 # netstat 命令还能显示其它各种各样的网络相关信息，例如路由表， 网卡统计信息， 虚假连接以及多播成员等。
 
+# 常用端口
+# ftp:21
+# telnet:23
+# smtp:25
+# http:80
+# pop-3:110
+# netbios-ssn:139
+# squid:3128
+# mysql:3306
+
 echo "-a 显示系统所有的 tcp、udp 以及 unix 连接"
 netstat -a
 
