@@ -18,7 +18,12 @@ RUN set -euxo pipefail \
         nmap \
         procps \
         psmisc \
+        lshw \
+        lsscsi \
+        util-linux \
     && rm -rf /var/cache/apk/*
+    # lshw：Hardware Lister
+    # util-linux：Random collection of Linux utilities
 
 EXPOSE 61209
 
