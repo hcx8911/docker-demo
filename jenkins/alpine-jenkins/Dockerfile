@@ -14,24 +14,26 @@ ENV JENKINS_HOME=/var/jenkins_home \
 
 VOLUME /var/jenkins_home
 
-
-# https://github.com/krallin/tini/releases
-ENV TINI_VERSION=0.16.1
-
-# LTS: 2.73.3
-# 2.92
-ENV JENKINS_VERSION=2.73.3
+# LTS: 2.89.2
+# https://jenkins.io/download/
+ENV JENKINS_VERSION=2.89.2
 
 # https://github.com/jenkinsci/docker/blob/master/Dockerfile-alpine
 RUN set -euxo pipefail \
-    && apk add --update --no-cache --virtual .fetch-deps \
-        ca-certificates \
+    && apk add --no-cache \
+        git \
+        openssh-client \
         curl \
+        unzip \
+        bash \
+        ttf-dejavu \
+        coreutils \
+        tini \
+    && apk add --update --no-cache --virtual .fetch-deps \
         gnupg \
     \
     && export GNUPGHOME="$(mktemp -d)" \
     &&  for key in \
-            595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 \
             150FDE3F7787E7D11EF4E12A9B7D32F2D50582E6 \
         ; do \
             gpg --keyserver-options timeout=10 --keyserver pgp.mit.edu --recv-keys "$key" || \
@@ -45,13 +47,6 @@ RUN set -euxo pipefail \
     && mkdir -p \
         /usr/share/jenkins/ref/init.groovy.d \
         /var/jenkins_home \
-    && curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static-amd64.asc \
-        -o /bin/tini.asc \
-    && curl -fsSL https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-static-amd64 \
-        -o /bin/tini \
-    && gpg --batch --verify /bin/tini.asc /bin/tini \
-    && chmod +x /bin/tini \
-    && rm -f /bin/tini.asc \
     \
     && curl -fsSL https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war.asc \
         -o /usr/share/jenkins/jenkins.war.asc \
@@ -80,11 +75,11 @@ COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 RUN set -euxo pipefail \
      && chmod +x /usr/local/bin/*
 
-# ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
 # ENTRYPOINT ["/bin/tini", "--", "sh", "/usr/local/bin/jenkins.sh"]
 
-ENTRYPOINT ["sh", "/usr/local/bin/jenkins.sh"]
+# ENTRYPOINT ["sh", "/usr/local/bin/jenkins.sh"]
 
 
 # 编译及执行方法如下:

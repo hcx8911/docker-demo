@@ -24,6 +24,11 @@ ENV TZ=Asia/Shanghai \
     SUPPORTED=zh_CN.UTF-8:en_US.UTF-8:C.UTF-8 \
     LC_ALL=C.UTF-8
 
+ARG user=docker
+ARG group=docker
+ARG uid=1000
+ARG gid=1000
+
 # 设置时区、中文、镜像源
 # ARG APK_MIRROR=mirrors.ustc.edu.cn
 # ARG APK_MIRROR=mirror.tuna.tsinghua.edu.cn
@@ -34,11 +39,17 @@ RUN set -euxo pipefail \
         tzdata \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
-    && rm -rf /var/cache/apk/* \
-    && echo "end"
+    \
+    && addgroup -g ${gid} ${group} \
+    && adduser -u ${uid} -G ${group} -s /bin/sh -D ${user} \
+    \
+    && rm -rf /var/cache/apk/*
 # && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
 
-CMD ["/bin/sh"]
+# USER ${user}
+
+CMD /bin/sh
+# CMD su docker; /bin/sh
 
 # 编译及执行方法如下:
 # docker build -t alpine_base ~/OpenSource/WaterBolik/docker-demo/os_base/alpine_base/

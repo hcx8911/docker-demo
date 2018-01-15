@@ -7,12 +7,12 @@ services:
 
   jenkins:
     container_name: jenkins
-    # build: users-service
+    build: alpine-jenkins
     # build: https://github.com/realpython/flask-microservices-users.git
     # image: jenkins/jenkins
     # image: jenkins/jenkins:alpine
     # image: jenkins/jenkins:lts
-    image: jenkins/jenkins:lts-alpine
+    # image: jenkins/jenkins:lts-alpine
     volumes:
       - ./jenkins_home:/var/jenkins_home
     ports:

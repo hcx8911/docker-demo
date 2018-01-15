@@ -17,6 +17,11 @@ ENV TZ=Asia/Shanghai \
     SUPPORTED=zh_CN.UTF-8:en_US.UTF-8:C.UTF-8 \
     LC_ALL=zh_CN.UTF-8
 
+ARG user=docker
+ARG group=docker
+ARG uid=1000
+ARG gid=1000
+
 # 使用镜像源、时区、中文
 # ARG APT_MIRROR=mirrors.ustc.edu.cn
 # ARG APT_MIRROR=mirrors.tuna.tsinghua.edu.cn
@@ -39,9 +44,13 @@ RUN set -eux \
     \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
     \
+    && addgroup -g ${gid} ${group} \
+    && adduser -u ${uid} -G ${group} -s /bin/sh -D ${user} \
+    \
     && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
+# USER ${user}
 # CMD ["bin/bash"]
 
 # $ docker build -t ubuntu_base ~/OpenSource/WaterBolik/docker-demo/os_base/ubuntu_base/

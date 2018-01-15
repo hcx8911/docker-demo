@@ -24,6 +24,11 @@ ENV TZ=Asia/Shanghai \
     SUPPORTED=zh_CN.utf8:en_US.utf8:C.utf8 \
     LC_ALL=zh_CN.utf8
 
+ARG user=docker
+ARG group=docker
+ARG uid=1000
+ARG gid=1000
+
 # 设置时区、中文、镜像源
 # ARG YUM_MIRROR=mirrors.ustc.edu.cn
 # ARG YUM_MIRROR=mirror.tuna.tsinghua.edu.cn
@@ -63,8 +68,12 @@ RUN set -euxo pipefail \
             -e "s|http:|https:|g" \
         /etc/yum.repos.d/epel*.repo \
     \
+    && addgroup -g ${gid} ${group} \
+    && adduser -u ${uid} -G ${group} -s /bin/sh -D ${user} \
+    \
     && yum clean all
 
+# USER ${user}
 # CMD ["bin/bash"]
 
 # 查看系统版本
