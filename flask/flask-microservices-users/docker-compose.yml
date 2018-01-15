@@ -114,6 +114,10 @@ services:
       - bridge
     ports:
       - '80:80'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5g"
     depends_on:
       users-service:
         condition: service_started

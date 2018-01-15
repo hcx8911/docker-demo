@@ -1,5 +1,5 @@
 FROM debian
-# FROM debian:9.2
+# FROM debian:9.3
 
 # https://hub.docker.com/_/debian/
 # https://store.docker.com/images/debian

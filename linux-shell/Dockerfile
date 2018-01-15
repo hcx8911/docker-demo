@@ -21,9 +21,11 @@ RUN set -euxo pipefail \
         lshw \
         lsscsi \
         util-linux \
+        coreutils \
     && rm -rf /var/cache/apk/*
     # lshw：Hardware Lister
     # util-linux：Random collection of Linux utilities
+    # coreutils：The basic file, shell and text manipulation utilities
 
 EXPOSE 61209
 
