@@ -20,8 +20,8 @@ LABEL MAINTAINER="WaterBolik@163.com"
 
 ENV TZ=Asia/Shanghai \
     LANG=zh_CN.utf8 \
-    LANGUAGE=zh_CN.utf8:en_US.utf8:C.utf8 \
-    SUPPORTED=zh_CN.utf8:en_US.utf8:C.utf8 \
+    LANGUAGE=zh_CN.utf8:en_US.UTF-8:C.UTF-8 \
+    SUPPORTED=zh_CN.utf8:en_US.UTF-8:C.UTF-8 \
     LC_ALL=zh_CN.utf8
 
 ARG user=docker
@@ -37,20 +37,6 @@ RUN set -euxo pipefail \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
     \
-    && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
-    && echo "export LC_ALL=zh_CN.utf8" >> /etc/profile \
-    && sed  -i \
-            -e 's~^override_install_langs=en_US.utf8~override_install_langs=zh_CN.utf8~g' \
-        /etc/yum.conf \
-    &&  { \
-            echo 'LANG="zh_CN.utf8"'; \
-            echo 'LANGUAGE="zh_CN.utf8:en_US.utf8:C.utf8"'; \
-            echo 'SUPPORTED="zh_CN.utf8:en_US.utf8:C.utf8"'; \
-            echo 'LC_ALL="zh_CN.utf8"'; \
-            echo 'SYSFONT="lat0-sun16"'; \
-        } \
-        > /etc/locale.conf \
-    \
     && sed  -i \
             -e "s|^mirrorlist=|#mirrorlist=|g" \
             -e "s|^#baseurl=|baseurl=|g" \
@@ -61,6 +47,9 @@ RUN set -euxo pipefail \
     \
     && yum -y install \
         epel-release \
+        kde-l10n-Chinese \
+    && yum -y reinstall \
+        glibc-common \
     && sed  -i \
             -e "s|^mirrorlist=|#mirrorlist=|g" \
             -e "s|^#baseurl=|baseurl=|g" \
@@ -68,8 +57,28 @@ RUN set -euxo pipefail \
             -e "s|http:|https:|g" \
         /etc/yum.repos.d/epel*.repo \
     \
-    && addgroup -g ${gid} ${group} \
-    && adduser -u ${uid} -G ${group} -s /bin/sh -D ${user} \
+    && groupadd -g ${gid} ${group} \
+    && useradd -u ${uid} -g ${gid} -m -s /bin/bash ${user} \
+    \
+    && localedef \
+        -i zh_CN \
+        -c \
+        -f UTF-8 \
+        -A /usr/share/locale/locale.alias \
+        zh_CN.UTF-8 \
+    \
+    && echo "export LC_ALL=zh_CN.utf8" >> /etc/profile \
+    && sed  -i \
+            -e 's~^override_install_langs=en_US.UTF-8~override_install_langs=zh_CN.utf8~g' \
+        /etc/yum.conf \
+    &&  { \
+            echo 'LANG="zh_CN.utf8"'; \
+            echo 'LANGUAGE="zh_CN.utf8:en_US.UTF-8:C.UTF-8"'; \
+            echo 'SUPPORTED="zh_CN.utf8:en_US.UTF-8:C.UTF-8"'; \
+            echo 'LC_ALL="zh_CN.utf8"'; \
+            echo 'SYSFONT="lat0-sun16"'; \
+        } \
+        > /etc/locale.conf \
     \
     && yum clean all
 

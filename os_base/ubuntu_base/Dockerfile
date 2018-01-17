@@ -42,10 +42,15 @@ RUN set -eux \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
     \
-    && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
+    && localedef \
+        -i zh_CN \
+        -c \
+        -f UTF-8 \
+        -A /usr/share/locale/locale.alias \
+        zh_CN.UTF-8 \
     \
-    && addgroup -g ${gid} ${group} \
-    && adduser -u ${uid} -G ${group} -s /bin/sh -D ${user} \
+    && groupadd -g ${gid} ${group} \
+    && useradd -u ${uid} -g ${gid} -m -s /bin/bash ${user} \
     \
     && apt-get clean && apt-get autoclean && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
