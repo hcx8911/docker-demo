@@ -24,5 +24,5 @@ python-editor==1.0.3
 setuptools==38.2.4
 six==1.11.0
 SQLAlchemy==1.1.15
-Werkzeug==0.13
+Werkzeug==0.15.3
 wheel==0.30.0
