@@ -21,7 +21,7 @@ pycparser==2.18
 PyJWT==1.5.3
 python-dateutil==2.6.1
 python-editor==1.0.3
-setuptools==38.2.4
+setuptools==65.5.1
 six==1.11.0
 SQLAlchemy==1.1.15
 Werkzeug==0.13
